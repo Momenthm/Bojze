@@ -2,6 +2,7 @@
 	layout: "vertical",
 	height: "100%",
 	width: "100%",
+	backgroundColor:"#FFFFFF",
 },
 "#navBar": {
 	top: 0,

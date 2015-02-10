@@ -10,6 +10,15 @@ $.prop.backButton = false;
 $.prop.viewMode = 'nav';
 $.prop.title = '';
 
+//status bar
+var statusBarheight;
+if(Ti.Platform.osname == 'android'){
+	statusBarheight = 25;
+}else{
+	statusBarheight = 20;
+}
+$.navBar.top = statusBarheight;
+
 // General getter/setter
 var get = exports.get = function(property) {
 	if ($.prop.hasOwnProperty(property)) {
