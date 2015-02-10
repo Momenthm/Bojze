@@ -47,7 +47,7 @@ $.mergeMissing = function(mergeInto, mergeFrom) {
 		}
 	}
 	return newObj;
-}
+};
 
 // Init
 exports.init = function(args) {
