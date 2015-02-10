@@ -1,0 +1,9 @@
+<Alloy>
+	<View id="menuWrap">
+		<View id="menu">
+			<Button id="buttonMainView" class="menuItem" title="Main"></Button>
+			<Button id="buttonExit" class="menuItem" title="Exit App"></Button>
+		</View>
+		<View id="border"></View>
+	</View>
+</Alloy>

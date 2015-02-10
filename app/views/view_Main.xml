@@ -1,0 +1,21 @@
+<Alloy>
+	<View id="view_Main">           
+        <View id="screen" layout="vertical">
+		<View id="line1" layout="horizontal">
+			<Label id="user"/>
+			<!-- <TextField id="enterUser"/> -->
+		</View>
+		<View id="line2" layout="horizontal">
+			<Label id="pwd"/>
+			<!-- <TextField id="enterPwd"/> -->
+		</View>
+		<Label id="login"/>
+		
+		<Label id="insert"/>
+		<View id="display" layout="horizontal"/>
+		<Label id="query"/>
+		
+		<ScrollView id="display2" layout="veritcal"/>
+		</View>
+	</View>
+</Alloy>

@@ -1,0 +1,100 @@
+"#view_MainPage": {
+	//left: "260dip",
+	width: "100%",
+	height: "100%",
+	backgroundColor:"#CFECF0"
+}
+
+"#screen":{
+	height:"100%",
+	width:"100%",
+	// backgroundColor:"#FF0000",
+}
+
+"#line1":{
+	top:"10%",
+	height:"10%",
+	width:"100%",
+}
+
+"#line2":{
+	// top:"20%",
+	height:"10%",
+	width:"100%",
+}
+
+"#user":{
+	top:"5%",
+	height:Ti.UI.SIZE,
+	width:Ti.UI.SIZE,
+	text:"username",
+	textAlign:"center",
+	color:"#000000",
+	// backgroundColor:"#00FF00",
+	font:{
+		fontSize: 20,
+		fontWeight: 'normal',
+	}
+}
+
+"#pwd":{
+	top:"5%",
+	height:Ti.UI.SIZE,
+	width:Ti.UI.SIZE,
+	text:"password",
+	textAlign:"center",
+	color:"#000000",
+	font:{
+		fontSize: 20,
+		fontWeight: 'normal',
+	}
+}
+
+"#login":{
+	height:Ti.UI.SIZE,
+	width:Ti.UI.SIZE,
+	text:"login",
+	textAlign:"center",
+	color:"#000000",
+	font:{
+		fontSize: 20,
+		fontWeight: 'normal',
+	}
+}
+
+"#insert":{
+	// top:"5%",
+	height:Ti.UI.SIZE,
+	width:Ti.UI.SIZE,
+	text:"enter hotel infomation",
+	textAlign:"center",
+	color:"#000000",
+	font:{
+		fontSize: 20,
+		fontWeight: 'normal',
+	}
+}
+
+"#display":{
+	height:"10%",
+}
+
+"#query":{
+	// top:"5%",
+	height:Ti.UI.SIZE,
+	width:Ti.UI.SIZE,
+	text:"query",
+	textAlign:"center",
+	color:"#000000",
+	font:{
+		fontSize: 20,
+		fontWeight: 'normal',
+	}
+}
+
+"#display2":{
+	width:"100%",
+	// backgroundColor:"#0000FF",
+	layout:"vertical",	
+}
+
