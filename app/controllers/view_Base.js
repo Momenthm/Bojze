@@ -45,7 +45,7 @@ $.mergeMissing = function(mergeInto, mergeFrom) {
 		}
 	}
 	return newObj;
-}
+};
 
 // Set properties
 var args = arguments[0] || {};
@@ -62,9 +62,9 @@ exports.init = function(options) {
 	// Bind navigation controls
 	$.buttonMenu.addEventListener("click", menu.toggle);
 	$.buttonBack.addEventListener("click", navigation.back);
-	$.buttonBack.addEventListener("touchstart", function() {$.buttonBackWrap.backgroundColor = "#1b2026"});
-	$.buttonBack.addEventListener("touchend", function() {$.buttonBackWrap.backgroundColor = "#2e3641"});
-	$.buttonBack.addEventListener("touchcancel", function() {$.buttonBackWrap.backgroundColor = "#2e3641"});
+	$.buttonBack.addEventListener("touchstart", function() {$.buttonBackWrap.backgroundColor = "#1b2026";});
+	$.buttonBack.addEventListener("touchend", function() {$.buttonBackWrap.backgroundColor = "#2e3641";});
+	$.buttonBack.addEventListener("touchcancel", function() {$.buttonBackWrap.backgroundColor = "#2e3641";});
 	
 	$.title.text = options.title;
 		
