@@ -36,6 +36,12 @@ var login = Ti.UI.createLabel({
 	}
 });
 
+var imageViewTest = Ti.UI.createImageView({
+	image :'https://s3-us-west-1.amazonaws.com/storage.cloud.appcelerator.com/TKgkBChJRV2RhlMzFXz0lU3vjcH5AU9a/photos/dd/7a/54d9aaffc069eb7f9b043440/vt2_square_75.jpg'
+	
+});
+
+
 Ti.App.addEventListener('loginSuccess',function(e){
 	Ti.App.Properties.setString('login_user',e.username);
 	Ti.App.Properties.setString('login_pwd',e.pwd);
@@ -53,10 +59,10 @@ login.addEventListener('click',function(){
 	Alloy.Globals.CloudManager .userLogin(usernameInput.value, passwordInput.value);
 
 });
-
 $.view_Login.add(usernameInput);
 $.view_Login.add(passwordInput);
 $.view_Login.add(login);
+$.view_Login.add(imageViewTest);
 
 /*
 function loginUser(username,pwd){
