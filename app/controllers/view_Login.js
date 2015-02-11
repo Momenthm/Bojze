@@ -51,6 +51,7 @@ Ti.App.addEventListener('loginSuccess',function(e){
 login.addEventListener('click',function(){
 	// loginUser(usernameInput.value, passwordInput.value);
 	Alloy.Globals.CloudManager .userLogin(usernameInput.value, passwordInput.value);
+
 });
 
 $.view_Login.add(usernameInput);

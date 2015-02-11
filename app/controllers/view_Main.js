@@ -8,7 +8,6 @@ var navigation = Alloy.Globals.navigation;
 var sessionId = "";
 // var loadedOnce = Ti.App.Properties.getBool("loadOnce", false);
 
-//var CloudFunc = require('CloudFunc');
 
 Ti.App.Properties.setString('login_user',"");
 Ti.App.Properties.setString('login_pwd',"");
@@ -31,7 +30,6 @@ Ti.App.addEventListener('queryPosition',function(e){
 });
 
 Alloy.Globals.CloudManager.queryPositions();
-
 // queryPositions();
 // 
 // function queryPositions(e){
