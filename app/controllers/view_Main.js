@@ -145,7 +145,7 @@ function addElement(heightIndex,startTime,endTime,publishTime,vacancy,salary,des
 		// top:"35%",
 		height:"33%",
 		width:"100%",
-		text:startTime+"-"+endTime,
+		text:Alloy.Globals.commonFunc.formatConverter(startTime)+"-"+Alloy.Globals.commonFunc.formatConverter(endTime),
 		borderColor: "#EAEAFA",
 		borderWidth: 1,
 	});
