@@ -14,7 +14,7 @@
 
 // managers
 Alloy.Globals.CloudManager      = require("managers/CloudManager");
-
+Alloy.Globals.commonFunc = require("managers/commonFunc");
 
 
 //======[ configuration]======= 

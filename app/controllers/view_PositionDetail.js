@@ -4,8 +4,11 @@
 //===========================================================================	
 var args = arguments[0] || {};
 
-var positionDetail = args.positionDetail;
+// var positionDetail = args.positionDetail;
 
+exports.baseController = "view_Base";
+$.main.add($.view_PositionDetail);
+var navigation = Alloy.Globals.navigation;
 
 //===========================================================================
 // END OF PROPERTIES
