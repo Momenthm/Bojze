@@ -4,7 +4,9 @@ var args = arguments[0] || {};
 exports.baseController = "view_Base";
 $.main.add($.view_Login);
 var navigation = Alloy.Globals.navigation;
-var Cloud = Alloy.Globals.Cloud;
+// var Cloud = Alloy.Globals.Cloud;
+
+var CloudFunc = require('CloudFunc');
 
 var usernameInput = Ti.UI.createTextField({
   borderStyle: Ti.UI.INPUT_BORDERSTYLE_BEZEL,
@@ -35,14 +37,28 @@ var login = Ti.UI.createLabel({
 	}
 });
 
+Ti.App.addEventListener('loginSuccess',function(e){
+	Ti.App.Properties.setString('login_user',e.username);
+	Ti.App.Properties.setString('login_pwd',e.pwd);
+	Ti.App.Properties.setString('login_session',e.sessionId);
+
+	Ti.App.fireEvent('refreshLogin',{   	
+	});
+	   
+	alert("loginSuccess");     
+	navigation.back();
+});
+
 login.addEventListener('click',function(){
-	loginUser(usernameInput.value, passwordInput.value);
+	// loginUser(usernameInput.value, passwordInput.value);
+	CloudFunc.userLogin(usernameInput.value, passwordInput.value);
 });
 
 $.view_Login.add(usernameInput);
 $.view_Login.add(passwordInput);
 $.view_Login.add(login);
 
+/*
 function loginUser(username,pwd){
 	Cloud.Users.login({
 	    login: username,
@@ -70,4 +86,4 @@ function loginUser(username,pwd){
 	            ((e.error && e.message) || JSON.stringify(e)));
 	    }
 	});
-}
+}*/

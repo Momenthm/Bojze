@@ -4,43 +4,88 @@ var args = arguments[0] || {};
 exports.baseController = "view_Base";
 $.main.add($.view_Main);
 var navigation = Alloy.Globals.navigation;
-var Cloud = Alloy.Globals.Cloud;
+// var Cloud = Alloy.Globals.Cloud;
 var sessionId = "";
 // var loadedOnce = Ti.App.Properties.getBool("loadOnce", false);
 
+var CloudFunc = require('CloudFunc');
 
+Ti.App.Properties.setString('login_user',"");
+Ti.App.Properties.setString('login_pwd',"");
+Ti.App.Properties.setString('login_session',"");
 
 // $.titleLabel.addEventListener('click',function(e){
 	// $.body.removeAllChildren();
 	// queryPositions(e);
 // });
 
-queryPositions();
+Ti.App.addEventListener('queryPosition',function(e){
+	// alert('salary: ' + e.positionList[0].Salary + '\n' +
+	                // 'vacancy: ' + e.positionList[0].Vacancy + '\n' +
+	                // 'description: ' + e.positionList[0].Description + '\n' +
+	                // 'created_at: ' + e.positionList[0].created_at);
+	for(var i=0;i<(e.positionList).length;i++){
+		var position = e.positionList[i];
+		addElement(i,position.StartTime,position.EndTime,position.created_at,position.Vacancy,position.Salary,position.Description);
+	}
+});
 
-function queryPositions(e){
-	$.body.removeAllChildren();
-	Cloud.Objects.query({
-	    classname: 'POSITION',
-	    limit:1000,
-	    // page: 1,
-	    // per_page: 10,
-	    // where: {
-	        // color: 'blue'
+CloudFunc.queryPositions();
+
+// queryPositions();
+// 
+// function queryPositions(e){
+	// $.body.removeAllChildren();
+	// Cloud.Objects.query({
+	    // classname: 'POSITION',
+	    // limit:1000,
+	    // // page: 1,
+	    // // per_page: 10,
+	    // // where: {
+	        // // color: 'blue'
+	    // // }
+	// }, function (e) {
+	    // if (e.success) {
+	        // // alert('Success:\n' +
+	            // // 'Count: ' + e.POSITION.length);
+	        // for (var i = 0; i < e.POSITION.length; i++) {
+	            // var position = e.POSITION[i];
+	            // // alert('salary: ' + position.Salary + '\n' +
+	                // // 'vacancy: ' + position.Vacancy + '\n' +
+	                // // 'description: ' + position.Description + '\n' +
+	                // // 'created_at: ' + position.created_at);
+	            // // deleteHotel(e,hotel.id);
+// 	            
+	            // addElement(i,position.StartTime,position.EndTime,position.created_at,position.Vacancy,position.Salary,position.Description);
+	        // }
+	    // } else {
+	        // alert('Error:\n' +
+	            // ((e.error && e.message) || JSON.stringify(e)));
 	    // }
+	// });
+// }
+
+function grabImage(hid){
+	Cloud.Objects.query({
+	    classname: 'HOTEL',
+	    limit:1000,
+	    where:{
+	    	HID:hid,
+	    }
 	}, function (e) {
 	    if (e.success) {
 	        // alert('Success:\n' +
 	            // 'Count: ' + e.POSITION.length);
-	        for (var i = 0; i < e.POSITION.length; i++) {
-	            var position = e.POSITION[i];
-	            // alert('salary: ' + position.Salary + '\n' +
-	                // 'vacancy: ' + position.Vacancy + '\n' +
-	                // 'description: ' + position.Description + '\n' +
-	                // 'created_at: ' + position.created_at);
-	            // deleteHotel(e,hotel.id);
-	            
-	            addElement(i,position.StartTime,position.EndTime,position.created_at,position.Vacancy,position.Salary,position.Description);
-	        }
+	        // for (var i = 0; i < e.POSITION.length; i++) {
+	            // var position = e.POSITION[i];
+	            // // alert('salary: ' + position.Salary + '\n' +
+	                // // 'vacancy: ' + position.Vacancy + '\n' +
+	                // // 'description: ' + position.Description + '\n' +
+	                // // 'created_at: ' + position.created_at);
+	            // // deleteHotel(e,hotel.id);
+// 	            
+	            // addElement(i,position.StartTime,position.EndTime,position.created_at,position.Vacancy,position.Salary,position.Description);
+	        // }
 	    } else {
 	        alert('Error:\n' +
 	            ((e.error && e.message) || JSON.stringify(e)));
@@ -52,12 +97,13 @@ function addElement(heightIndex,startTime,endTime,publishTime,vacancy,salary,des
 	
 	// for(var i=1;i <= num;i++){
 	var layer = Ti.UI.createView({
-			top:60*(heightIndex),
-			height:60,
-			width:"100%",
-			borderColor: "#EAEAFA",
-			borderWidth: 1,
-			layout:"horizontal",
+		index:(heightIndex+1),
+		top:60*(heightIndex),
+		height:60,
+		width:"100%",
+		borderColor: "#EAEAFA",
+		borderWidth: 1,
+		layout:"horizontal",
 	});	
 	
 	var hotelImage = Ti.UI.createView({
@@ -142,6 +188,12 @@ function addElement(heightIndex,startTime,endTime,publishTime,vacancy,salary,des
 	layer.add(hotelImage);
 	layer.add(leftView);
 	layer.add(rightView);
+	
+	layer.addEventListener('click',function(){
+		alert(layer.index);
+		navigation.open("view_Detail",{title: "Detail"});
+	});
+	
 	$.body.add(layer);
 }	
 
@@ -167,20 +219,6 @@ $.loginStatus.addEventListener('click',function(){
 	    LoginRefresh();
 	}
 });
-
-// Ti.App.addEventListener('refreshLogin',function(){
-	// var user = Ti.App.Properties.getString('login_user',"");
-	// if(user != ""){
-		// $.loginStatus.text = "logout";
-		// $.titleLabel.text = "welcome "+user;
-	// }else{
-		// $.loginStatus.text = "login";
-		// $.titleLabel.text = "You have not login yet";
-	// }
-// });
-
-
-
 LoginRefresh();
 Ti.App.addEventListener('refreshLogin',LoginRefresh);
 
