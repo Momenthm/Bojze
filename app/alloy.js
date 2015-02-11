@@ -12,8 +12,8 @@
 
 
 
-//=====[Ti modules]=======
-Alloy.Globals.Cloud = require('ti.cloud');
+// managers
+Alloy.Globals.CloudManager      = require("managers/CloudManager");
 
 
 
