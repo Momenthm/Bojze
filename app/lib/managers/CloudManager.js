@@ -53,17 +53,18 @@ exports.queryPositions = function(){
 	});
 };
 
-exports.queryHotelWithID = function(e){
+exports.queryHotelWithID = function(hid){
 	var hotel ;
 	Cloud.Objects.query({
-	    classname: 'POSITION',
+	    classname: 'HOTEL',
 	    limit:1000,
 	     where: {
-	         HID: e
+	         HID: hid
 	    }
 	}, function (e) {
 	    if (e.success) {
-		hotel = e.HOTEL[0];
+	    	alert('length:'+e.HOTEL.length);
+		hotel = e.HOTEL[0].Address;
 	    } else {
 	        alert('Error:\n' +
 	            ((e.error && e.message) || JSON.stringify(e)));
@@ -72,11 +73,11 @@ exports.queryHotelWithID = function(e){
 	return hotel;
 };
 
-exports.queryHotelPhotoWithHID  = function (e){
+exports.queryHotelPhotoWithHID  = function (pid){
 	
 	var photoUrl;
 	Cloud.Photos.query({
-		photo_id:e
+		photo_id:pid
 		},function (e) {
     if (e.success) {
         if (e.photos.length == 0) {
@@ -96,9 +97,28 @@ exports.queryHotelPhotoWithHID  = function (e){
 	return photoUrl;
 };
 
-exports.createApplication(sessionId){
+exports.createApplication = function(session_id,pid,username){
 	Cloud.Objects.create({
-	
-	},function(e)
+		session_id:session_id,
+		classname:'APPLICATION',
+		fields:{
+			AID:username,
+			AStatus:"Processing",
+			PID:pid,
+		}
+	},function(e){
+        if (e.success) {
+	        var application = e.APPLICATION[0];
+	        alert('Success:\n' +
+	            'id: ' + application.id + '\n' +
+	            'AID' + application.AID + '\n' +
+	            'PID' + application.PID + '\n' +
+	            'AStatus' + application.AStatus + '\n' +
+	            'created_at: ' + application.created_at);
+	    } else {
+	        alert('Error:\n' +
+	            ((e.error && e.message) || JSON.stringify(e)));
+	    }
+    });
 };
 
