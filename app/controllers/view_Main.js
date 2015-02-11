@@ -25,7 +25,8 @@ Ti.App.addEventListener('queryPosition',function(e){
 	                // 'created_at: ' + e.positionList[0].created_at);
 	for(var i=0;i<(e.positionList).length;i++){
 		var position = e.positionList[i];
-		addElement(i,position.StartTime,position.EndTime,position.created_at,position.Vacancy,position.Salary,position.Description);
+		var photoURL =Alloy.Globals.CloudManager.queryHotelPhotoWithHID(position.HID);
+		addElement(i,photoURL,position.StartTime,position.EndTime,position.created_at,position.Vacancy,position.Salary,position.Description);
 	}
 });
 
@@ -63,35 +64,7 @@ Alloy.Globals.CloudManager.queryPositions();
 	// });
 // }
 
-function grabImage(hid){
-	Cloud.Objects.query({
-	    classname: 'HOTEL',
-	    limit:1000,
-	    where:{
-	    	HID:hid,
-	    }
-	}, function (e) {
-	    if (e.success) {
-	        // alert('Success:\n' +
-	            // 'Count: ' + e.POSITION.length);
-	        // for (var i = 0; i < e.POSITION.length; i++) {
-	            // var position = e.POSITION[i];
-	            // // alert('salary: ' + position.Salary + '\n' +
-	                // // 'vacancy: ' + position.Vacancy + '\n' +
-	                // // 'description: ' + position.Description + '\n' +
-	                // // 'created_at: ' + position.created_at);
-	            // // deleteHotel(e,hotel.id);
-// 	            
-	            // addElement(i,position.StartTime,position.EndTime,position.created_at,position.Vacancy,position.Salary,position.Description);
-	        // }
-	    } else {
-	        alert('Error:\n' +
-	            ((e.error && e.message) || JSON.stringify(e)));
-	    }
-	});
-}
-
-function addElement(heightIndex,startTime,endTime,publishTime,vacancy,salary,description){
+function addElement(heightIndex,photoURL,startTime,endTime,publishTime,vacancy,salary,description){
 	
 	// for(var i=1;i <= num;i++){
 	var layer = Ti.UI.createView({
@@ -108,6 +81,10 @@ function addElement(heightIndex,startTime,endTime,publishTime,vacancy,salary,des
 		left:0,
 		height:"100%",
 		width:"20%",
+	});
+	
+	var hotelImageDisplay = Ti.UI.createImageView({
+		image:'https://s3-us-west-1.amazonaws.com/storage.cloud.appcelerator.com/TKgkBChJRV2RhlMzFXz0lU3vjcH5AU9a/photos/dd/7a/54d9aaffc069eb7f9b043440/vt2_square_75.jpg'
 	});
 	
 	var leftView = Ti.UI.createView({
@@ -182,6 +159,7 @@ function addElement(heightIndex,startTime,endTime,publishTime,vacancy,salary,des
 	leftView.add(publishDateLabel);
 	rightView.add(SalaryLabel);
 	rightView.add(VacancyLabel);
+    hotelImage.add(hotelImageDisplay);
 	
 	layer.add(hotelImage);
 	layer.add(leftView);

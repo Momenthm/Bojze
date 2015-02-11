@@ -53,6 +53,49 @@ exports.queryPositions = function(){
 	});
 };
 
+exports.queryHotelWithID = function(e){
+	var hotel ;
+	Cloud.Objects.query({
+	    classname: 'POSITION',
+	    limit:1000,
+	     where: {
+	         HID: e
+	    }
+	}, function (e) {
+	    if (e.success) {
+		hotel = e.HOTEL[0];
+	    } else {
+	        alert('Error:\n' +
+	            ((e.error && e.message) || JSON.stringify(e)));
+	    }
+	});
+	return hotel;
+};
+
+exports.queryHotelPhotoWithHID  = function (e){
+	
+	var photoUrl;
+	Cloud.Photos.query({
+		photo_id:e
+		},function (e) {
+    if (e.success) {
+        if (e.photos.length == 0) {
+            alert('No photos!');
+        }
+        else {
+   
+                Ti.API.info(e.photos[0].filename + ': '
+                    + e.photos[0].urls.square_75);
+     		photoUrl=e.photos[0].urls.square_75;
+        }
+    }
+    else {
+        alert(e);
+    }
+});
+	return photoUrl;
+};
+
 exports.createApplication(sessionId){
 	Cloud.Objects.create({
 	

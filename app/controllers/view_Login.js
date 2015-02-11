@@ -36,6 +36,7 @@ var login = Ti.UI.createLabel({
 	}
 });
 
+
 Ti.App.addEventListener('loginSuccess',function(e){
 	Ti.App.Properties.setString('login_user',e.username);
 	Ti.App.Properties.setString('login_pwd',e.pwd);
@@ -53,7 +54,6 @@ login.addEventListener('click',function(){
 	Alloy.Globals.CloudManager .userLogin(usernameInput.value, passwordInput.value);
 
 });
-
 $.view_Login.add(usernameInput);
 $.view_Login.add(passwordInput);
 $.view_Login.add(login);
