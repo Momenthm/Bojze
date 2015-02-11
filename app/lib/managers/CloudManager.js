@@ -53,5 +53,9 @@ exports.queryPositions = function(){
 	});
 };
 
-
+exports.createApplication(sessionId){
+	Cloud.Objects.create({
+	
+	},function(e)
+};
 
