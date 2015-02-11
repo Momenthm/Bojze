@@ -1,5 +1,21 @@
 <Alloy>
-	<View id="PositionDetail">
-		
+	<View id="view_PositionDetail">
+		<View id="titleView">
+		</View>
+		<View id="addressView" class="border">
+			<Label id="addressLabel" class="text"/>
+		</View>
+		<View id="phoneView" class="border">
+			<Label id="phoneLabel" class="text"/>
+		</View>
+		<View id="emailView" class="border">
+			<Label id="emailLabel" class="text"/>
+		</View>
+		<View id="descriptionView" class="border">
+			<Label id="descriptionLabel" class="text"/>
+		</View>
+		<View id="applyView">
+			<Label id="applyLabel"/>
+		</View>
 	</View>
 </Alloy>

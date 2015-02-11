@@ -2,3 +2,90 @@
 ".container" : {
   
 }
+
+".border" : {
+	borderRadius:8,
+	borderWidth:2,
+	borderColor:"#3AB7CD",
+	// width:"65%",
+	// height:"10%",
+}
+
+"#titleView":{
+	top:0,
+	width:"85%",
+	height:"22%",
+	// backgroundColor:"#0000FF",
+}
+
+"#addressView":{
+	top:"25%",
+	width:"85%",
+	height:"13%",
+	// backgroundColor:"#00FF00",
+}
+
+"#phoneView":{
+	top:"40%",
+	width:"85%",
+	height:"13%",
+	// backgroundColor:"#FF0000",
+}
+
+"#emailView":{
+	top:"55%",
+	width:"85%",
+	height:"13%",
+	// backgroundColor:"#FF0000",
+}
+
+"#descriptionView":{
+	top:"70%",
+	width:"85%",
+	height:"13%",
+	// backgroundColor:"#FF0000",
+}
+
+"#applyView":{
+	top:"85%",
+	width:"50%",
+	height:"13%",
+	borderRadius:13,
+	backgroundColor:"#3AB7CD",
+	// backgroundColor:"#FF0000",
+}
+
+".text":{
+	textAlign:"center",
+	color:"#3AB7CD",
+	font:{
+		fontSize: 20,
+		fontWeight: 'normal',
+	}
+}
+
+"#addressLabel":{
+	text:"address",
+}
+
+"#phoneLabel":{
+	text:"phoneNo",
+}
+
+"#emailLabel":{
+	text:"email",
+}
+
+"#descriptionLabel":{
+	text:"description",
+}
+
+"#applyLabel":{
+	text:"APPLY",
+	textAlign:"center",
+	color:"#FFFFFF",
+	font:{
+		fontSize: 20,
+		fontWeight: 'normal',
+	}
+}
