@@ -10,6 +10,13 @@ exports.baseController = "view_Base";
 $.main.add($.view_PositionDetail);
 var navigation = Alloy.Globals.navigation;
 
+$.applyView.addEventListener('click',function(e){
+	var session_id = Ti.App.Properties.getString('login_session',"");
+	var username = Ti.App.Properties.getString('login_user',"");
+	var pid = args.pid;
+	Alloy.Globals.CloudManager.createApplication(session_id,pid,username);
+});
+
 //===========================================================================
 // END OF PROPERTIES
 //===========================================================================	

@@ -26,7 +26,11 @@ Ti.App.addEventListener('queryPosition',function(e){
 	for(var i=0;i<(e.positionList).length;i++){
 		var position = e.positionList[i];
 		var photoURL =Alloy.Globals.CloudManager.queryHotelPhotoWithHID(position.HID);
-		addElement(i,photoURL,position.StartTime,position.EndTime,position.created_at,position.Vacancy,position.Salary,position.Description);
+		// var parameter = {
+			// index:i,
+// 			
+		// };
+		addElement(i,position.PID,photoURL,position.StartTime,position.EndTime,position.created_at,position.Vacancy,position.Salary,position.Description);
 	}
 });
 
@@ -64,11 +68,11 @@ Alloy.Globals.CloudManager.queryPositions();
 	// });
 // }
 
-function addElement(heightIndex,photoURL,startTime,endTime,publishTime,vacancy,salary,description){
+function addElement(heightIndex,pid,photoURL,startTime,endTime,publishTime,vacancy,salary,description){
 	
 	// for(var i=1;i <= num;i++){
 	var layer = Ti.UI.createView({
-		index:(heightIndex+1),
+		index:pid,
 		top:60*(heightIndex),
 		height:60,
 		width:"100%",
@@ -167,7 +171,7 @@ function addElement(heightIndex,photoURL,startTime,endTime,publishTime,vacancy,s
 	
 	layer.addEventListener('click',function(){
 		alert(layer.index);
-		navigation.open("view_PositionDetail",{title: "Detail"});
+		navigation.open("view_PositionDetail",{title: "Detail", pid:layer.index});
 	});
 	
 	$.body.add(layer);
