@@ -1,20 +1,22 @@
 var Cloud = require("ti.cloud");
 
-exports.userLogin = function(username,pwd){
+var navigation = Alloy.Globals.navigation;
+
+//function for login at view_main and view_login
+exports.userLogin = function(username,pwd,from){
 	Cloud.Users.login({
 	    login: username,
 	    password: pwd,
 	}, function (e) {
 	    if (e.success) {
 	        var user = e.users[0];
+	        Ti.App.Properties.setString('login_user',username);
+			Ti.App.Properties.setString('login_pwd',pwd);
+			Ti.App.Properties.setString('login_session',e.meta.session_id);
 	        
-	        
-	        Ti.App.fireEvent('loginSuccess',{
-	        	username:username,
-	        	pwd:pwd,
-	        	sessionId : e.meta.session_id,
-	        });
-	        
+		    Ti.App.fireEvent('loginSuccess',{
+		    	from:from,
+		    });
 	    } else {
 	        alert('Error:\n' +
 	            ((e.error && e.message) || JSON.stringify(e)));
@@ -22,30 +24,93 @@ exports.userLogin = function(username,pwd){
 	});
 };
 
+//used in exports.queryPositions
+var QueryPhotoURL = function(photo_id,index){
+	var photoURL;
+	// alert("photo_id:"+photo_id);
+	Cloud.Photos.query({
+		where:{
+			id:photo_id,
+		}
+	},
+	function (e) {
+	    if (e.success) {
+	    	// alert("e.photo.length:"+e.photos.length);
+	        if (e.photos.length == 0) {
+	            alert('No photos!');
+	        }
+	        else {
+	   			// alert("index:"+index+"\n"+"photo_id:"+photo_id+"\n"+"length:"+e.photos.length+"\n"+"photoURL:"+e.photos[0].urls.square_75);
+	   			
+	                // Ti.API.info(e.photos[0].filename + ': '
+	                    // + e.photos[0].urls.square_75);
+	     		photoURL = e.photos[0].urls.square_75;
+	     		Ti.App.fireEvent("Hotel_PhotoURL",{
+	     			photoURL:photoURL,
+	     			index:index,
+	     		});
+	        }
+	    }
+	    else {
+	        alert(e);
+	    }
+	});
+};
+
+//used in exports.queryPositions
+var queryHotelPhotoWithHID  = function(hid,index){
+	var photo_id;
+	Cloud.Objects.query({
+		classname:'HOTEL',
+		limit:1,
+		where:{
+			HID:hid,
+		}
+	},function (e) {
+	    if (e.success) {
+	    	photo_id = e.HOTEL[0].photo_id;
+	    	// alert(index+":"+photo_id);
+			QueryPhotoURL(photo_id,index);
+	    }
+	    else {
+	        alert(e);
+	    }
+	});
+};
+
+//function for position query at view_Main
 exports.queryPositions = function(){
 	Cloud.Objects.query({
 	    classname: 'POSITION',
 	    limit:1000,
-	    // page: 1,
-	    // per_page: 10,
-	    // where: {
-	        // color: 'blue'
-	    // }
 	}, function (e) {
 	    if (e.success) {
-	        // alert('Success:\n' +
-	            // 'Count: ' + e.POSITION.length);
-	        Ti.App.fireEvent("queryPosition",{
-	        	positionList:e.POSITION,
-	        });    
+	    	var position_length = e.POSITION.length;
+	    	var POSITION = e.POSITION;
+	        var photoURL_List = [];
+	        var position;
+	        var index = 0;
+	        var GETphotoURL = function(e){
+	        	// alert(e.photoURL);
+	        	photoURL_List.push(e.photoURL);
+	        	if((e.index+1) == position_length){
+	        		Ti.App.removeEventListener("Hotel_PhotoURL",GETphotoURL);
+	        		// alert(photoURL_List.length);
+			        Ti.App.fireEvent("queryPosition",{
+			        	positionList:POSITION,
+			        	photoList:photoURL_List,
+			        });  
+	        	}else{
+	        		index++;
+	        		position = POSITION[index];
+	        		queryHotelPhotoWithHID(position.HID,index);
+	        	}
+	        };
+	        Ti.App.addEventListener("Hotel_PhotoURL",GETphotoURL);
 	        
-	        for (var i = 0; i < e.POSITION.length; i++) {
-	            var position = e.POSITION[i];
-	            // alert('salary: ' + position.Salary + '\n' +
-	                // 'vacancy: ' + position.Vacancy + '\n' +
-	                // 'description: ' + position.Description + '\n' +
-	                // 'created_at: ' + position.created_at);
-	        }
+	        position = POSITION[index];
+	        queryHotelPhotoWithHID(position.HID,index);
+	               
 	    } else {
 	        alert('Error:\n' +
 	            ((e.error && e.message) || JSON.stringify(e)));
@@ -53,49 +118,9 @@ exports.queryPositions = function(){
 	});
 };
 
-exports.queryHotelWithID = function(hid){
-	var hotel ;
-	Cloud.Objects.query({
-	    classname: 'HOTEL',
-	    limit:1000,
-	     where: {
-	         HID: hid
-	    }
-	}, function (e) {
-	    if (e.success) {
-	    	alert('length:'+e.HOTEL.length);
-		hotel = e.HOTEL[0].Address;
-	    } else {
-	        alert('Error:\n' +
-	            ((e.error && e.message) || JSON.stringify(e)));
-	    }
-	});
-	return hotel;
-};
 
-exports.queryHotelPhotoWithHID  = function (pid){
-	
-	var photoUrl;
-	Cloud.Photos.query({
-		photo_id:pid
-		},function (e) {
-    if (e.success) {
-        if (e.photos.length == 0) {
-            alert('No photos!');
-        }
-        else {
-   
-                Ti.API.info(e.photos[0].filename + ': '
-                    + e.photos[0].urls.square_75);
-     		photoUrl=e.photos[0].urls.square_75;
-        }
-    }
-    else {
-        alert(e);
-    }
-});
-	return photoUrl;
-};
+
+
 
 exports.createApplication = function(session_id,pid,username){
 	Cloud.Objects.create({

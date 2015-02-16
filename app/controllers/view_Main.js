@@ -3,20 +3,35 @@ var args = arguments[0] || {};
 // Extend the demo_view controller
 exports.baseController = "view_Base";
 $.main.add($.view_Main);
+
+$.view_Main.height = "80%";
+
+var view_Tabs = Alloy.createController("view_Tabs").getView('view_Tabs');
+view_Tabs.top = "80%";
+$.main.add(view_Tabs);
+
 var navigation = Alloy.Globals.navigation;
-// var Cloud = Alloy.Globals.Cloud;
 var sessionId = "";
-// var loadedOnce = Ti.App.Properties.getBool("loadOnce", false);
+
+//clear seesion id
+Ti.App.Properties.setString('login_session',0);
+//get saved user
+var savedUsername = Ti.App.Properties.getString('login_user',"");
+var savedPassword = Ti.App.Properties.getString('login_pwd',"");
+Ti.App.addEventListener('loginSuccess',function(e){
+	if(e.from == "view_Main"){
+		Ti.App.fireEvent('refreshLogin',{  	
+		});  
+	}
+});
+if(savedUsername != "" && savedPassword != ""){
+	Alloy.Globals.CloudManager.userLogin(savedUsername, savedPassword, "view_Main");
+}
 
 
-Ti.App.Properties.setString('login_user',"");
-Ti.App.Properties.setString('login_pwd',"");
-Ti.App.Properties.setString('login_session',"");
-
-// $.titleLabel.addEventListener('click',function(e){
-	// $.body.removeAllChildren();
-	// queryPositions(e);
-// });
+Ti.App.addEventListener('toUserProfile',function(){
+	navigation.open("view_UserProfile", {title: "Profile"});
+});
 
 Ti.App.addEventListener('queryPosition',function(e){
 	// alert('salary: ' + e.positionList[0].Salary + '\n' +
@@ -25,52 +40,14 @@ Ti.App.addEventListener('queryPosition',function(e){
 	                // 'created_at: ' + e.positionList[0].created_at);
 	for(var i=0;i<(e.positionList).length;i++){
 		var position = e.positionList[i];
-		var photoURL =Alloy.Globals.CloudManager.queryHotelPhotoWithHID(position.HID);
-		// var parameter = {
-			// index:i,
-// 			
-		// };
-		addElement(i,position.PID,photoURL,position.StartTime,position.EndTime,position.created_at,position.Vacancy,position.Salary,position.Description);
+		var photoURL = e.photoList[i];
+		addElement(i,photoURL,position.PID,position.StartTime,position.EndTime,position.created_at,position.Vacancy,position.Salary,position.Description);
 	}
 });
 
 Alloy.Globals.CloudManager.queryPositions();
-// queryPositions();
-// 
-// function queryPositions(e){
-	// $.body.removeAllChildren();
-	// Cloud.Objects.query({
-	    // classname: 'POSITION',
-	    // limit:1000,
-	    // // page: 1,
-	    // // per_page: 10,
-	    // // where: {
-	        // // color: 'blue'
-	    // // }
-	// }, function (e) {
-	    // if (e.success) {
-	        // // alert('Success:\n' +
-	            // // 'Count: ' + e.POSITION.length);
-	        // for (var i = 0; i < e.POSITION.length; i++) {
-	            // var position = e.POSITION[i];
-	            // // alert('salary: ' + position.Salary + '\n' +
-	                // // 'vacancy: ' + position.Vacancy + '\n' +
-	                // // 'description: ' + position.Description + '\n' +
-	                // // 'created_at: ' + position.created_at);
-	            // // deleteHotel(e,hotel.id);
-// 	            
-	            // addElement(i,position.StartTime,position.EndTime,position.created_at,position.Vacancy,position.Salary,position.Description);
-	        // }
-	    // } else {
-	        // alert('Error:\n' +
-	            // ((e.error && e.message) || JSON.stringify(e)));
-	    // }
-	// });
-// }
 
-function addElement(heightIndex,pid,photoURL,startTime,endTime,publishTime,vacancy,salary,description){
-	
-	// for(var i=1;i <= num;i++){
+function addElement(heightIndex,photoURL,pid,startTime,endTime,publishTime,vacancy,salary,description){
 	var layer = Ti.UI.createView({
 		index:pid,
 		top:60*(heightIndex),
@@ -88,7 +65,8 @@ function addElement(heightIndex,pid,photoURL,startTime,endTime,publishTime,vacan
 	});
 	
 	var hotelImageDisplay = Ti.UI.createImageView({
-		image:'https://s3-us-west-1.amazonaws.com/storage.cloud.appcelerator.com/TKgkBChJRV2RhlMzFXz0lU3vjcH5AU9a/photos/dd/7a/54d9aaffc069eb7f9b043440/vt2_square_75.jpg'
+		// image:'https://s3-us-west-1.amazonaws.com/storage.cloud.appcelerator.com/TKgkBChJRV2RhlMzFXz0lU3vjcH5AU9a/photos/dd/7a/54d9aaffc069eb7f9b043440/vt2_square_75.jpg'
+		image:photoURL,
 	});
 	
 	var leftView = Ti.UI.createView({
@@ -199,5 +177,6 @@ $.loginStatus.addEventListener('click',function(){
 	    LoginRefresh();
 	}
 });
+
 LoginRefresh();
 Ti.App.addEventListener('refreshLogin',LoginRefresh);

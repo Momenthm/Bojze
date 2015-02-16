@@ -1,0 +1,16 @@
+<Alloy>
+	<View id="view_Tabs" layout="horizontal">
+		<View id="tab1">
+			<Label id="label1">position</Label>
+		</View>
+		<View id="tab2">
+			<Label id="label2">userProfile</Label>
+		</View>
+		<View id="tab3">
+			<Label id="label3">jobManagement</Label>
+		</View>
+		<View id="tab4">
+			<Label id="label1">tab4</Label>
+		</View>
+	</View>
+</Alloy>

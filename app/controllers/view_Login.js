@@ -38,20 +38,17 @@ var login = Ti.UI.createLabel({
 
 
 Ti.App.addEventListener('loginSuccess',function(e){
-	Ti.App.Properties.setString('login_user',e.username);
-	Ti.App.Properties.setString('login_pwd',e.pwd);
-	Ti.App.Properties.setString('login_session',e.sessionId);
-
-	Ti.App.fireEvent('refreshLogin',{   	
-	});
-	   
-	alert("loginSuccess");     
-	navigation.back();
+	if(e.from == "view_Login"){
+		Ti.App.fireEvent('refreshLogin',{  	
+		});
+		alert("loginSuccess");     
+		navigation.back();
+	}
 });
 
 login.addEventListener('click',function(){
 	// loginUser(usernameInput.value, passwordInput.value);
-	Alloy.Globals.CloudManager .userLogin(usernameInput.value, passwordInput.value);
+	Alloy.Globals.CloudManager.userLogin(usernameInput.value, passwordInput.value,"view_Login");
 
 });
 $.view_Login.add(usernameInput);

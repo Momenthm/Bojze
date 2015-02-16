@@ -1,0 +1,24 @@
+"#tab1":{
+	left:0,
+	width:"25%",
+	borderWidth:2,
+	borderColor:"#000000",
+}
+
+"#tab2":{
+	width:"25%",
+	borderWidth:2,
+	borderColor:"#000000",
+}
+
+"#tab3":{
+	width:"25%",
+	borderWidth:2,
+	borderColor:"#000000",
+}
+
+"#tab4":{
+	width:"fill",
+	borderWidth:2,
+	borderColor:"#000000",
+}

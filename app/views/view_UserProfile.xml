@@ -1,0 +1,16 @@
+<Alloy>
+	<View id="view_UserProfile" layout="veritcal">
+		<View id="top" layout="horizontal">
+			<View id="statue"/>
+			<Label id="NameLabel"/>
+		</View>
+		<View id="body" layout="vertical">
+			<Label id="emailLabel"/>
+			<Label id="phoneLabel"/>
+			<Label id="addressLabel"/>
+			<Label id="finLabel"/>
+		</View>
+		<View id="bottom">
+		</View>
+	</View>
+</Alloy>
