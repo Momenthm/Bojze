@@ -22,6 +22,15 @@ exports.baseController = "view_Base";
 $.main.add($.view_UserProfile);
 var navigation = Alloy.Globals.navigation;
 
+var user = Ti.App.Properties.getObject('login_userObject',null);
+
+if(user != null){
+	$.NameLabel.text = user.first_name+" "+user.last_name;
+	$.emailLabel.text = user.email;
+	$.phoneLabel.text = user.custom_fields.Phone;
+	$.finLabel.text = user.custom_fields.IC;
+}
+
 //===========================================================================
 // END OF PROPERTIES
 //===========================================================================	

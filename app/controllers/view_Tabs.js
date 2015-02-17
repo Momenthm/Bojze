@@ -5,7 +5,11 @@ $.tab1.addEventListener('click',function(){
 });
 
 $.tab2.addEventListener('click',function(){
-	Ti.App.fireEvent('toUserProfile',{});	
+	if(Ti.App.Properties.getString('login_user',"") != ""){
+		Ti.App.fireEvent('toUserProfile',{});	
+	}else{
+		alert("You have not logged in yet!");	
+	}
 });
 
 $.tab3.addEventListener('click',function(){

@@ -14,6 +14,16 @@
 	width:"100%",
 }
 
+".border" : {
+	borderRadius:8,
+	borderWidth:2,
+	borderColor:"#3AB7CD",
+	height:"20%",
+	width:"80%",
+	// width:"65%",
+	// height:"10%",
+}
+
 "#statue":{
 	// borderWidth:2,
 	// borderColor:"#000000",
@@ -25,34 +35,38 @@
 	width:"fill",
 	text:"Name",
 	textAlign:"center",
-	borderWidth:2,
-	borderColor:"#000000",
-}
+	color:"#3AB7CD",
+	font:{
+		fontSize: 20,
+		fontWeight: 'normal',
+	}}
 
 "#emailLabel":{
 	text:"email",
 	textAlgin:"center",
-	borderWidth:2,
-	borderColor:"#000000",
+	color:"#3AB7CD",
+	font:{
+		fontSize: 20,
+		fontWeight: 'normal',
+	}
 }
 
 "#phoneLabel":{
 	text:"phone",
 	textAlgin:"center",
-	borderWidth:2,
-	borderColor:"#000000",
-}
-
-"#addressLabel":{
-	text:"address",
-	textAlgin:"center",
-	borderWidth:2,
-	borderColor:"#000000",
+	color:"#3AB7CD",
+	font:{
+		fontSize: 20,
+		fontWeight: 'normal',
+	}
 }
 
 "#finLabel":{
 	text:"fin No",
 	textAlgin:"center",
-	borderWidth:2,
-	borderColor:"#000000",
+	color:"#3AB7CD",
+	font:{
+		fontSize: 20,
+		fontWeight: 'normal',
+	}
 }

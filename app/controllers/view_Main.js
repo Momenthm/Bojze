@@ -28,16 +28,11 @@ if(savedUsername != "" && savedPassword != ""){
 	Alloy.Globals.CloudManager.userLogin(savedUsername, savedPassword, "view_Main");
 }
 
-
 Ti.App.addEventListener('toUserProfile',function(){
 	navigation.open("view_UserProfile", {title: "Profile"});
 });
 
 Ti.App.addEventListener('queryPosition',function(e){
-	// alert('salary: ' + e.positionList[0].Salary + '\n' +
-	                // 'vacancy: ' + e.positionList[0].Vacancy + '\n' +
-	                // 'description: ' + e.positionList[0].Description + '\n' +
-	                // 'created_at: ' + e.positionList[0].created_at);
 	for(var i=0;i<(e.positionList).length;i++){
 		var position = e.positionList[i];
 		var photoURL = e.photoList[i];
@@ -174,6 +169,7 @@ $.loginStatus.addEventListener('click',function(){
 		Ti.App.Properties.setString('login_user',"");
 	    Ti.App.Properties.setString('login_pwd',"");
 	    Ti.App.Properties.setString('login_session',"");
+	    Ti.App.Properties.setObject('login_userObject',null);
 	    LoginRefresh();
 	}
 });

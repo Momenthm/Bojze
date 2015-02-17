@@ -13,6 +13,9 @@ exports.userLogin = function(username,pwd,from){
 	        Ti.App.Properties.setString('login_user',username);
 			Ti.App.Properties.setString('login_pwd',pwd);
 			Ti.App.Properties.setString('login_session',e.meta.session_id);
+			Ti.App.Properties.setObject('login_userObject',user);
+	        // alert("e.meta.user_id:"+user.id);
+	        // Ti.App.Properties.setString('user_id',e.meta.user_id);
 	        
 		    Ti.App.fireEvent('loginSuccess',{
 		    	from:from,
@@ -118,7 +121,7 @@ exports.queryPositions = function(){
 	});
 };
 
-
+// exports.
 
 
 
