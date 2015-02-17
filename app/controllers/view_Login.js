@@ -54,33 +54,3 @@ login.addEventListener('click',function(){
 $.view_Login.add(usernameInput);
 $.view_Login.add(passwordInput);
 $.view_Login.add(login);
-
-/*
-function loginUser(username,pwd){
-	Cloud.Users.login({
-	    login: username,
-	    password: pwd,
-	}, function (e) {
-	    if (e.success) {
-	        var user = e.users[0];
-	        sessionId = e.meta.session_id;
-	        // alert(e.meta.session_id);
-	        // alert('Success:\n' +
-	            // 'id: ' + user.id + '\n' +
-	            // 'sessionId: ' + Cloud.sessionId + '\n' +
-	            // 'first name: ' + user.first_name + '\n' +
-	            // 'last name: ' + user.last_name);
-	        Ti.App.Properties.setString('login_user',username);
-	        Ti.App.Properties.setString('login_pwd',pwd);
-	        Ti.App.Properties.setString('login_session',e.meta.session_id);
-	        
-	        Ti.App.fireEvent('refreshLogin',{   	
-	        });
-	        
-	        navigation.back();
-	    } else {
-	        alert('Error:\n' +
-	            ((e.error && e.message) || JSON.stringify(e)));
-	    }
-	});
-}*/

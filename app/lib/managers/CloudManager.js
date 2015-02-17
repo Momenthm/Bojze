@@ -121,10 +121,31 @@ exports.queryPositions = function(){
 	});
 };
 
-// exports.
+//query hotel with PID
+exports.queryHotelWithHID = function(hid){
+	Cloud.Objects.query({
+	    classname: 'HOTEL',
+	    limit:1,
+	    where:{
+	    	HID:hid,
+	    }
+	}, function (e) {
+	    if (e.success) {    	
+	    	// alert("length:"+e.HOTEL.length);
+	    	if(e.HOTEL.length == 1){
+	    		var hotel = e.HOTEL[0];
+		    	Ti.App.fireEvent('queryHotelSuccess',{
+		    		hotel:hotel,
+		    	});
+	    	}
+	    } else {
+	        alert('Error:\n' +
+	            ((e.error && e.message) || JSON.stringify(e)));
+	    }
+	});
+};
 
-
-
+//Job Application
 exports.createApplication = function(session_id,pid,username){
 	Cloud.Objects.create({
 		session_id:session_id,

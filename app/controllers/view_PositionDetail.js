@@ -10,6 +10,14 @@ exports.baseController = "view_Base";
 $.main.add($.view_PositionDetail);
 var navigation = Alloy.Globals.navigation;
 
+var hotel = args.hotel;
+var position = args.position;
+//set value for labels
+$.addressLabel.text = hotel.Address;
+$.phoneLabel.text = hotel.Phone;
+$.emailLabel.text = hotel.Email;
+$.descriptionLabel.text = position.Description;
+
 $.applyView.addEventListener('click',function(e){
 	var session_id = Ti.App.Properties.getString('login_session',"");
 	var username = Ti.App.Properties.getString('login_user',"");

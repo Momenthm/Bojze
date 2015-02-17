@@ -36,15 +36,18 @@ Ti.App.addEventListener('queryPosition',function(e){
 	for(var i=0;i<(e.positionList).length;i++){
 		var position = e.positionList[i];
 		var photoURL = e.photoList[i];
-		addElement(i,photoURL,position.PID,position.StartTime,position.EndTime,position.created_at,position.Vacancy,position.Salary,position.Description);
+		// addElement(i,photoURL,position.PID,position.StartTime,position.EndTime,position.created_at,position.Vacancy,position.Salary,position.Description);
+		addElement(i,photoURL,position);
 	}
 });
 
 Alloy.Globals.CloudManager.queryPositions();
 
-function addElement(heightIndex,photoURL,pid,startTime,endTime,publishTime,vacancy,salary,description){
+// function addElement(heightIndex,photoURL,pid,startTime,endTime,publishTime,vacancy,salary,description){
+function addElement(heightIndex,photoURL,position){
 	var layer = Ti.UI.createView({
-		index:pid,
+		pid:position.PID,
+		hid:position.HID,
 		top:60*(heightIndex),
 		height:60,
 		width:"100%",
@@ -86,7 +89,7 @@ function addElement(heightIndex,photoURL,pid,startTime,endTime,publishTime,vacan
 		// top:"5%",
 		height:"33%",
 		width:"100%",
-		text:description,
+		text:position.Description,
 		borderColor: "#EAEAFA",
 		borderWidth: 1,
 		font:{
@@ -99,7 +102,7 @@ function addElement(heightIndex,photoURL,pid,startTime,endTime,publishTime,vacan
 		// top:"35%",
 		height:"33%",
 		width:"100%",
-		text:Alloy.Globals.commonFunc.formatConverter(startTime)+"-"+Alloy.Globals.commonFunc.formatConverter(endTime),
+		text:Alloy.Globals.commonFunc.formatConverter(position.StartTime)+"-"+Alloy.Globals.commonFunc.formatConverter(position.EndTime),
 		borderColor: "#EAEAFA",
 		borderWidth: 1,
 	});
@@ -108,7 +111,7 @@ function addElement(heightIndex,photoURL,pid,startTime,endTime,publishTime,vacan
 		// top:"75%",
 		height:"34%",
 		width:"100%",
-		text:publishTime,
+		text:position.created_at,
 		borderColor: "#EAEAFA",
 		borderWidth: 1,
 	});
@@ -117,7 +120,7 @@ function addElement(heightIndex,photoURL,pid,startTime,endTime,publishTime,vacan
 		top:"5%",
 		height:"40%",
 		width:"100%",
-		text:salary,
+		text:position.Salary,
 		borderColor: "#EAEAFA",
 		borderWidth: 1,
 	});
@@ -126,7 +129,7 @@ function addElement(heightIndex,photoURL,pid,startTime,endTime,publishTime,vacan
 		// top:"45%",
 		height:"40%",
 		width:"100%",
-		text:vacancy,
+		text:position.Vacancy,
 		borderColor: "#EAEAFA",
 		borderWidth: 1,
 	});
@@ -143,8 +146,15 @@ function addElement(heightIndex,photoURL,pid,startTime,endTime,publishTime,vacan
 	layer.add(rightView);
 	
 	layer.addEventListener('click',function(){
-		alert(layer.index);
-		navigation.open("view_PositionDetail",{title: "Detail", pid:layer.index});
+		// alert(layer.index);
+		var receiver = function(e){
+			Ti.App.removeEventListener('queryHotelSuccess',receiver);
+			navigation.open("view_PositionDetail",{title: "Detail", position:position, hotel:e.hotel,});
+		};
+		Ti.App.addEventListener('queryHotelSuccess',receiver);
+		
+		Alloy.Globals.CloudManager.queryHotelWithHID(layer.hid);
+		
 	});
 	
 	$.body.add(layer);
