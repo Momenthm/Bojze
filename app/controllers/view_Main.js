@@ -32,14 +32,19 @@ Ti.App.addEventListener('toUserProfile',function(){
 	navigation.open("view_UserProfile", {title: "Profile"});
 });
 
-Ti.App.addEventListener('queryPosition',function(e){
+Ti.App.addEventListener('toJobManagement',function(){
+	navigation.open("view_JobManagement", {title: "JobManagement"});
+});
+
+var DisplayPosition = function(e){
+	Ti.App.removeEventListener('queryPosition',DisplayPosition);
 	for(var i=0;i<(e.positionList).length;i++){
 		var position = e.positionList[i];
 		var photoURL = e.photoList[i];
-		// addElement(i,photoURL,position.PID,position.StartTime,position.EndTime,position.created_at,position.Vacancy,position.Salary,position.Description);
 		addElement(i,photoURL,position);
 	}
-});
+};
+Ti.App.addEventListener('queryPosition',DisplayPosition);
 
 Alloy.Globals.CloudManager.queryPositions();
 
@@ -77,7 +82,6 @@ function addElement(heightIndex,photoURL,position){
 	});
 	
 	var rightView = Ti.UI.createView({
-		// left:"65%",
 		width:"20%",
 		height:"100%",
 		borderColor: "#EAEAFA",

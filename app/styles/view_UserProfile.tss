@@ -39,7 +39,8 @@
 	font:{
 		fontSize: 20,
 		fontWeight: 'normal',
-	}}
+	}
+}
 
 "#emailLabel":{
 	text:"email",

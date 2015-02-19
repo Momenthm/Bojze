@@ -121,6 +121,31 @@ exports.queryPositions = function(){
 	});
 };
 
+//function for position query at view_JobManagement
+exports.queryApplicationsByAID = function(AID){
+	Cloud.Objects.query({
+	    classname: 'APPLICATION',
+	    limit:1000,
+	    where:{
+	    	AID:AID,
+	    }
+	}, function (e) {
+	    if (e.success) {
+	    	var index = 0;
+	    	var APPLICATION_length = e.APPLICATION.length;
+	    	
+	    	
+	    	Ti.App.fireEvent("queryApplicationsByAID",{
+	    		applicationList:e.APPLICATION,
+	    	});
+	               
+	    } else {
+	        alert('Error:\n' +
+	            ((e.error && e.message) || JSON.stringify(e)));
+	    }
+	});
+};
+
 //query hotel with PID
 exports.queryHotelWithHID = function(hid){
 	Cloud.Objects.query({

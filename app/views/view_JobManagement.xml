@@ -1,4 +1,8 @@
 <Alloy>
-	<View id="view_JobManagement">
+	<View id="view_JobManagement" layout="vertical">
+		<View id="top">
+			<Label id="login_user"/>
+		</View>
+		<ScrollView id="body" layout="veritcal"/>
 	</View>
 </Alloy>

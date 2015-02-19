@@ -1,4 +1,13 @@
+"#top":{
+	top:0,
+	height:"20%",
+}
 
-".container" : {
-  
+"#login_user":{
+	text:"user",
+	textAlign:"center",
+	font:{
+		fontSize: 20,
+		fontWeight: 'normal',
+	}
 }

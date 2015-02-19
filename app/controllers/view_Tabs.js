@@ -13,7 +13,11 @@ $.tab2.addEventListener('click',function(){
 });
 
 $.tab3.addEventListener('click',function(){
-	Ti.App.fireEvent('toJobManagement',{});	
+	if(Ti.App.Properties.getString('login_user',"") != ""){
+		Ti.App.fireEvent('toJobManagement',{});
+	}else{
+		alert("You have not logged in yet!");	
+	}
 });
 
 
