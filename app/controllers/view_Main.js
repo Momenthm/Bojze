@@ -51,7 +51,7 @@ Alloy.Globals.CloudManager.queryPositions();
 // function addElement(heightIndex,photoURL,pid,startTime,endTime,publishTime,vacancy,salary,description){
 function addElement(heightIndex,photoURL,position){
 	var layer = Ti.UI.createView({
-		pid:position.PID,
+		pid:position.id,
 		hid:position.HID,
 		top:60*(heightIndex),
 		height:60,

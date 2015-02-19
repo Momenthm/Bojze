@@ -67,7 +67,7 @@ var queryHotelPhotoWithHID  = function(hid,index){
 		classname:'HOTEL',
 		limit:1,
 		where:{
-			HID:hid,
+			id:hid,
 		}
 	},function (e) {
 	    if (e.success) {
@@ -152,7 +152,7 @@ exports.queryHotelWithHID = function(hid){
 	    classname: 'HOTEL',
 	    limit:1,
 	    where:{
-	    	HID:hid,
+	    	id:hid,
 	    }
 	}, function (e) {
 	    if (e.success) {    	
@@ -171,12 +171,11 @@ exports.queryHotelWithHID = function(hid){
 };
 
 //Job Application
-exports.createApplication = function(session_id,pid,username){
+exports.createApplication = function(session_id,pid){
 	Cloud.Objects.create({
 		session_id:session_id,
 		classname:'APPLICATION',
 		fields:{
-			AID:username,
 			AStatus:"Processing",
 			PID:pid,
 		}
@@ -185,7 +184,6 @@ exports.createApplication = function(session_id,pid,username){
 	        var application = e.APPLICATION[0];
 	        alert('Success:\n' +
 	            'id: ' + application.id + '\n' +
-	            'AID' + application.AID + '\n' +
 	            'PID' + application.PID + '\n' +
 	            'AStatus' + application.AStatus + '\n' +
 	            'created_at: ' + application.created_at);
