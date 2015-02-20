@@ -24,20 +24,28 @@ var navigation = Alloy.Globals.navigation;
 
 var username = Ti.App.Properties.getString('login_user',"");
 $.login_user.text = username + " your application are below";
+var user = Ti.App.Properties.getObject('login_userObject',null);
+
+refresh();
 
 //display applications
-var DisplayApplications = function(e){
-	Ti.App.removeEventListener("queryApplicationsByAID",DisplayApplications);
-	var position;
-	for(var i=0;i<e.applicationList.length;i++){
-		application = e.applicationList[i];
-		addElement(i,application);
-	}
+function refresh(){
+	$.body.removeAllChildren();
+	var DisplayApplications = function(e){
+		Ti.App.removeEventListener("queryApplicationsByAID",DisplayApplications);
+		var application,position,hotel;
+		for(var i=0;i<e.applicationList.length;i++){
+			application = e.applicationList[i];
+			position = e.positionList[i];
+			hotel = e.hotelList[i];
+			addElement(i,application,position,hotel);
+		}
+	};
+	Ti.App.addEventListener("queryApplicationsByAID",DisplayApplications);
+	Alloy.Globals.CloudManager.queryApplicationsByUser(user.id);
 };
-Ti.App.addEventListener("queryApplicationsByAID",DisplayApplications);
-Alloy.Globals.CloudManager.queryApplicationsByAID(username);
 
-function addElement(heightIndex,application){
+function addElement(heightIndex,application,position,hotel){
 	var layer = Ti.UI.createView({
 		top:100*(heightIndex),
 		height:100,
@@ -67,7 +75,7 @@ function addElement(heightIndex,application){
 	var hotelLabel = Ti.UI.createLabel({
 		height:"20%",
 		width:"100%",
-		text:"hotel",
+		text:hotel.HName,
 		borderColor: "#EAEAFA",
 		borderWidth: 1,
 		font:{
@@ -79,7 +87,7 @@ function addElement(heightIndex,application){
 	var AddressLabel = Ti.UI.createLabel({
 		height:"20%",
 		width:"100%",
-		text:"address",
+		text:hotel.Address,
 		borderColor: "#EAEAFA",
 		borderWidth: 1,
 		font:{
@@ -91,7 +99,7 @@ function addElement(heightIndex,application){
 	var startTimeLabel = Ti.UI.createLabel({
 		height:"20%",
 		width:"100%",
-		text:"start",
+		text:position.StartTime,
 		borderColor: "#EAEAFA",
 		borderWidth: 1,
 		font:{
@@ -103,7 +111,7 @@ function addElement(heightIndex,application){
 	var endTimeLabel = Ti.UI.createLabel({
 		height:"20%",
 		width:"100%",
-		text:"end",
+		text:position.EndTime,
 		borderColor: "#EAEAFA",
 		borderWidth: 1,
 		font:{
@@ -115,7 +123,7 @@ function addElement(heightIndex,application){
 	var descriptionLabel = Ti.UI.createLabel({
 		height:"fill",
 		width:"100%",
-		text:"discription",
+		text:position.Description,
 		borderColor: "#EAEAFA",
 		borderWidth: 1,
 		font:{
@@ -148,16 +156,27 @@ function addElement(heightIndex,application){
 		}
 	});
 	
-	var buttonLabel = Ti.UI.createLabel({
+	var buttonLabel = Ti.UI.createButton({
+		aid:application.id,
 		height:"fill",
 		width:"100%",
-		text:"button",
+		title:"cancel",
 		borderColor: "#EAEAFA",
 		borderWidth: 1,
 		font:{
 			fontSize: 14,
 			fontWeight: 'normal',
 		}
+	});
+	
+	buttonLabel.addEventListener('click',function(){		
+		var cancelApplication = function(e){
+			Ti.App.removeEventListener('cancelApplicationSuccess',cancelApplication);
+			refresh();
+		};
+		Ti.App.addEventListener('cancelApplicationSuccess',cancelApplication);
+		
+		Alloy.Globals.CloudManager.cancelApplication(buttonLabel.aid);
 	});
 	
 	leftView.add(hotelLabel);

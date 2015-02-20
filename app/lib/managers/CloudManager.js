@@ -121,24 +121,108 @@ exports.queryPositions = function(){
 	});
 };
 
+//used in queryApplicationsByUser
+var queryHotelForApplication = function(position,index){
+	Cloud.Objects.query({
+	    classname: 'HOTEL',
+	    limit:1000,
+	    where:{
+	    	id:position.HID,
+	    }
+	}, function (e) {
+	    if (e.success) {
+	    	if(e.HOTEL.length == 1){
+	    		var hotel = e.HOTEL[0];
+		    	Ti.App.fireEvent("queryHotelAndPositionForApplications",{
+		    		index:index,
+		    		position:position,
+		    		hotel:hotel,
+		    	});	
+	    	}       
+	    } else {
+	        alert('Error:\n' +
+	            ((e.error && e.message) || JSON.stringify(e)));
+	    }
+	});
+};
+
+//used in queryApplicationsByUser
+var queryPositionForApplication = function(application,index){
+	Cloud.Objects.query({
+	    classname: 'POSITION',
+	    limit:1000,
+	    where:{
+	    	id:application.PID,
+	    }
+	}, function (e) {
+	    if (e.success) {
+	    	if(e.POSITION.length == 1){
+	    		var position = e.POSITION[0];
+				queryHotelForApplication(position,index);
+	        }   
+	    } else {
+	        alert('Error:\n' +
+	            ((e.error && e.message) || JSON.stringify(e)));
+	    }
+	});
+};
+
 //function for position query at view_JobManagement
-exports.queryApplicationsByAID = function(AID){
+exports.queryApplicationsByUser = function(uid){
 	Cloud.Objects.query({
 	    classname: 'APPLICATION',
 	    limit:1000,
 	    where:{
-	    	AID:AID,
+	    	user_id:uid,
 	    }
 	}, function (e) {
 	    if (e.success) {
 	    	var index = 0;
 	    	var APPLICATION_length = e.APPLICATION.length;
+	    	var applicationList = e.APPLICATION;
+	    	var positionList = [];
+	    	var hotelList = [];
 	    	
+	    	var getPosition = function(e){
+	    		positionList.push(e.position);
+	    		hotelList.push(e.hotel);
+	    		if(e.index == (APPLICATION_length - 1)){
+	    			Ti.App.removeEventListener('queryHotelAndPositionForApplications',getPosition);
+	    			Ti.App.fireEvent("queryApplicationsByAID",{
+			    		applicationList:applicationList,
+			    		positionList:positionList,
+			    		hotelList:hotelList,
+			    	});
+	    		}else{
+	    			index++;
+	    			queryPositionForApplication(applicationList[index],index);
+	    		}
+	    	};
+	    	Ti.App.addEventListener('queryHotelAndPositionForApplications',getPosition);
 	    	
-	    	Ti.App.fireEvent("queryApplicationsByAID",{
-	    		applicationList:e.APPLICATION,
-	    	});
-	               
+	    	queryPositionForApplication(applicationList[index],index);        
+	    } else {
+	        alert('Error:\n' +
+	            ((e.error && e.message) || JSON.stringify(e)));
+	    }
+	});
+};
+
+//function for cancel application at JobManagement
+exports.cancelApplication = function(aid){
+	var session_id = Ti.App.Properties.getString('login_session','');
+	Cloud.Objects.update({
+		session_id:session_id,
+	    classname: 'APPLICATION',
+	    id:aid,
+	    fields:{
+	    	AStatus:"cancelled",
+	    },
+	  
+	}, function (e) {
+	    if (e.success) {
+	        // alert('Success');
+	        Ti.App.fireEvent('cancelApplicationSuccess',{});
 	    } else {
 	        alert('Error:\n' +
 	            ((e.error && e.message) || JSON.stringify(e)));
