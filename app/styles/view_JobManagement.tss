@@ -1,13 +1,84 @@
+".tab" : {
+	width:"20%",
+	height:"100%",
+}
+
 "#top":{
 	top:0,
 	height:"20%",
+}
+
+"#tabs":{
+	height:"10%",
+}
+
+"#all":{
+	text:"All",
+	textAlign:"center",
+	color:"#3AB7CD",
+	borderWidth:4,
+	borderColor:"#3AB7CD",
+	font:{
+		fontSize: 12,
+		fontWeight: 'bold',
+	}
+}
+
+"#processing":{
+	text:"Processing",
+	textAlign:"center",
+	color:"#3AB7CD",
+	borderWidth:2,
+	borderColor:"#3AB7CD",
+	font:{
+		fontSize: 12,
+		fontWeight: 'normal',
+	}
+}
+
+"#approved":{
+	text:"Approved",
+	textAlign:"center",
+	color:"#3AB7CD",
+	borderWidth:2,
+	borderColor:"#3AB7CD",
+	font:{
+		fontSize: 12,
+		fontWeight: 'normal',
+	}
+	
+}
+
+"#completed":{
+	text:"Completed",
+	textAlign:"center",
+	color:"#3AB7CD",
+	borderWidth:2,
+	borderColor:"#3AB7CD",
+	font:{
+		fontSize: 12,
+		fontWeight: 'normal',
+	}
+}
+
+"#cancelled":{
+	width:"fill",
+	text:"Cancelled",
+	textAlign:"center",
+	color:"#3AB7CD",
+	borderWidth:2,
+	borderColor:"#3AB7CD",
+	font:{
+		fontSize: 12,
+		fontWeight: 'normal',
+	}
 }
 
 "#login_user":{
 	text:"user",
 	textAlign:"center",
 	font:{
-		fontSize: 20,
+		fontSize: 12,
 		fontWeight: 'normal',
 	}
 }

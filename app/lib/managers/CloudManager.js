@@ -216,7 +216,7 @@ exports.cancelApplication = function(aid){
 	    classname: 'APPLICATION',
 	    id:aid,
 	    fields:{
-	    	AStatus:"cancelled",
+	    	AStatus:"Cancelled",
 	    },
 	  
 	}, function (e) {

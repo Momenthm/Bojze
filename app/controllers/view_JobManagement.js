@@ -26,31 +26,52 @@ var username = Ti.App.Properties.getString('login_user',"");
 $.login_user.text = username + " your application are below";
 var user = Ti.App.Properties.getObject('login_userObject',null);
 
-refresh();
+var applicationList = [],positionList = [],hotelList = [];
 
-//display applications
-function refresh(){
-	$.body.removeAllChildren();
+var condition = "all";
+var heightIndex = 0;
+
+init();
+
+function init(){
 	var DisplayApplications = function(e){
 		Ti.App.removeEventListener("queryApplicationsByAID",DisplayApplications);
-		var application,position,hotel;
-		for(var i=0;i<e.applicationList.length;i++){
-			application = e.applicationList[i];
-			position = e.positionList[i];
-			hotel = e.hotelList[i];
-			addElement(i,application,position,hotel);
-		}
+		applicationList = e.applicationList;
+		positionList = e.positionList;
+		hotelList = e.hotelList;
+		refresh(condition);
 	};
 	Ti.App.addEventListener("queryApplicationsByAID",DisplayApplications);
 	Alloy.Globals.CloudManager.queryApplicationsByUser(user.id);
+}
+
+//display applications
+function refresh(filter){
+	$.body.removeAllChildren();
+	var application,position,hotel;
+	heightIndex = 0;
+	for(var i=0;i<applicationList.length;i++){
+		application = applicationList[i];
+		position = positionList[i];
+		hotel = hotelList[i];
+		if(filter == 'all'){
+			if(application.AStatus == 'Processing' || application.AStatus == 'Approved'){
+				addElement(i,application,position,hotel);
+				heightIndex++;
+			}
+		}else if(filter == application.AStatus){
+			addElement(i,application,position,hotel);
+			heightIndex++;
+		}
+	}
 };
 
-function addElement(heightIndex,application,position,hotel){
+function addElement(i,application,position,hotel){
 	var layer = Ti.UI.createView({
 		top:100*(heightIndex),
 		height:100,
 		width:"100%",
-		borderColor: "#EAEAFA",
+		borderColor: "#000000",
 		borderWidth: 1,
 		layout:"horizontal",
 	});
@@ -172,7 +193,8 @@ function addElement(heightIndex,application,position,hotel){
 	buttonLabel.addEventListener('click',function(){		
 		var cancelApplication = function(e){
 			Ti.App.removeEventListener('cancelApplicationSuccess',cancelApplication);
-			refresh();
+			applicationList[i].AStatus = "Cancelled"; 
+			refresh(condition);
 		};
 		Ti.App.addEventListener('cancelApplicationSuccess',cancelApplication);
 		
@@ -186,13 +208,183 @@ function addElement(heightIndex,application,position,hotel){
 	leftView.add(descriptionLabel);
 	rightView.add(applyTimeLabel);
 	rightView.add(statusLabel);
-	rightView.add(buttonLabel);
-	
+	if(application.AStatus == "Processing" || application.AStatus == "Approved"){
+		rightView.add(buttonLabel);
+	}
 	layer.add(leftView);
 	layer.add(rightView);
 	
 	$.body.add(layer);
 };
+
+//switch display condition
+$.all.addEventListener('click',function(){
+	if(condition!='all'){
+		$.all.borderWidth = 4;
+		$.all.font = {
+			fontSize: 12,
+			fontWeight: 'bold',
+		};
+		$.processing.borderWidth = 2;
+		$.processing.font = {
+			fontSize: 12,
+			fontWeight: 'normal',
+		};
+		$.approved.borderWidth = 2;
+		$.approved.font = {
+			fontSize: 12,
+			fontWeight: 'normal',
+		};
+		$.completed.borderWidth = 2;
+		$.completed.font = {
+			fontSize: 12,
+			fontWeight: 'normal',
+		};
+		$.cancelled.borderWidth = 2;
+		$.cancelled.font = {
+			fontSize: 12,
+			fontWeight: 'normal',
+		};
+		
+		
+		condition = 'all';
+		refresh(condition);
+	}
+});
+
+$.processing.addEventListener('click',function(){
+	if(condition!='Processing'){
+		$.all.borderWidth = 2;
+		$.all.font = {
+			fontSize: 12,
+			fontWeight: 'normal',
+		};
+		$.processing.borderWidth = 4;
+		$.processing.font = {
+			fontSize: 12,
+			fontWeight: 'bold',
+		};
+		$.approved.borderWidth = 2;
+		$.approved.font = {
+			fontSize: 12,
+			fontWeight: 'normal',
+		};
+		$.completed.borderWidth = 2;
+		$.completed.font = {
+			fontSize: 12,
+			fontWeight: 'normal',
+		};
+		$.cancelled.borderWidth = 2;
+		$.cancelled.font = {
+			fontSize: 12,
+			fontWeight: 'normal',
+		};
+		
+		condition = 'Processing';
+		refresh(condition);
+	}
+});
+
+$.approved.addEventListener('click',function(){
+	if(condition!='Approved'){
+		$.all.borderWidth = 2;
+		$.all.font = {
+			fontSize: 12,
+			fontWeight: 'normal',
+		};
+		$.processing.borderWidth = 2;
+		$.processing.font = {
+			fontSize: 12,
+			fontWeight: 'normal',
+		};
+		$.approved.borderWidth = 4;
+		$.approved.font = {
+			fontSize: 12,
+			fontWeight: 'bold',
+		};
+		$.completed.borderWidth = 2;
+		$.completed.font = {
+			fontSize: 12,
+			fontWeight: 'normal',
+		};
+		$.cancelled.borderWidth = 2;
+		$.cancelled.font = {
+			fontSize: 12,
+			fontWeight: 'normal',
+		};
+		
+		condition = 'Approved';
+		refresh(condition);
+	}
+});
+
+$.completed.addEventListener('click',function(){
+	if(condition!='Completed'){
+		$.all.borderWidth = 2;
+		$.all.font = {
+			fontSize: 12,
+			fontWeight: 'normal',
+		};
+		$.processing.borderWidth = 2;
+		$.processing.font = {
+			fontSize: 12,
+			fontWeight: 'normal',
+		};
+		$.approved.borderWidth = 2;
+		$.approved.font = {
+			fontSize: 12,
+			fontWeight: 'normal',
+		};
+		$.completed.borderWidth = 4;
+		$.completed.font = {
+			fontSize: 12,
+			fontWeight: 'bold',
+		};
+		$.cancelled.borderWidth = 2;
+		$.cancelled.font = {
+			fontSize: 12,
+			fontWeight: 'normal',
+		};
+		
+		condition = 'Completed';
+		refresh(condition);
+	}
+});
+
+$.cancelled.addEventListener('click',function(){
+	if(condition!='Cancelled'){
+		$.all.borderWidth = 2;
+		$.all.font = {
+			fontSize: 12,
+			fontWeight: 'normal',
+		};
+		$.processing.borderWidth = 2;
+		$.processing.font = {
+			fontSize: 12,
+			fontWeight: 'normal',
+		};
+		$.approved.borderWidth = 2;
+		$.approved.font = {
+			fontSize: 12,
+			fontWeight: 'normal',
+		};
+		$.completed.borderWidth = 2;
+		$.completed.font = {
+			fontSize: 12,
+			fontWeight: 'normal',
+		};
+		$.cancelled.borderWidth = 4;
+		$.cancelled.font = {
+			fontSize: 12,
+			fontWeight: 'bold',
+		};
+		
+		condition = 'Cancelled';
+		refresh(condition);
+	}
+});
+
+
 //===========================================================================
 // END OF PROPERTIES
 //===========================================================================	

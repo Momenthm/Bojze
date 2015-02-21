@@ -3,6 +3,13 @@
 		<View id="top">
 			<Label id="login_user"/>
 		</View>
+		<View id="tabs" layout="horizontal">
+			<Label id="all" class="tab"/>
+			<Label id="processing" class="tab"/>
+			<Label id="approved" class="tab"/>
+			<Label id="completed" class="tab"/>
+			<Label id="cancelled" class="tab"/>
+		</View>
 		<ScrollView id="body" layout="veritcal"/>
 	</View>
 </Alloy>
