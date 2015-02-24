@@ -1,0 +1,6 @@
+<Alloy>
+	<View id="view_Loading">
+		<ImageView id="loadingSpin"/>
+		<Label id="loadingLabel"/>
+	</View>
+</Alloy>

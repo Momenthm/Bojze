@@ -6,6 +6,7 @@ $.main.add($.view_Main);
 
 $.view_Main.height = "80%";
 
+var view_Loading = Alloy.createController("view_Loading").getView('view_Loading');
 var view_Tabs = Alloy.createController("view_Tabs").getView('view_Tabs');
 view_Tabs.top = "80%";
 $.main.add(view_Tabs);
@@ -36,18 +37,23 @@ Ti.App.addEventListener('toJobManagement',function(){
 	navigation.open("view_JobManagement", {title: "JobManagement"});
 });
 
-var DisplayPosition = function(e){
-	Ti.App.removeEventListener('queryPosition',DisplayPosition);
-	for(var i=0;i<(e.positionList).length;i++){
-		var position = e.positionList[i];
-		var photoURL = e.photoList[i];
-		addElement(i,photoURL,position);
-	}
-};
-Ti.App.addEventListener('queryPosition',DisplayPosition);
+init();
 
-Alloy.Globals.CloudManager.queryPositions();
-
+function init(){
+	var DisplayPosition = function(e){
+		Ti.App.removeEventListener('queryPosition',DisplayPosition);
+		for(var i=0;i<(e.positionList).length;i++){
+			var position = e.positionList[i];
+			var photoURL = e.photoList[i];
+			addElement(i,photoURL,position);
+		}
+		$.main.remove(view_Loading);
+	};
+	Ti.App.addEventListener('queryPosition',DisplayPosition);
+	
+	$.main.add(view_Loading);
+	Alloy.Globals.CloudManager.queryPositions();
+}
 // function addElement(heightIndex,photoURL,pid,startTime,endTime,publishTime,vacancy,salary,description){
 function addElement(heightIndex,photoURL,position){
 	var layer = Ti.UI.createView({

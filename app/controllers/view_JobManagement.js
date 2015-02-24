@@ -22,6 +22,8 @@ exports.baseController = "view_Base";
 $.main.add($.view_JobManagement);
 var navigation = Alloy.Globals.navigation;
 
+var view_Loading = Alloy.createController("view_Loading").getView('view_Loading');
+
 var username = Ti.App.Properties.getString('login_user',"");
 $.login_user.text = username + " your application are below";
 var user = Ti.App.Properties.getObject('login_userObject',null);
@@ -40,8 +42,10 @@ function init(){
 		positionList = e.positionList;
 		hotelList = e.hotelList;
 		refresh(condition);
+		$.main.remove(view_Loading);
 	};
 	Ti.App.addEventListener("queryApplicationsByAID",DisplayApplications);
+	$.main.add(view_Loading);
 	Alloy.Globals.CloudManager.queryApplicationsByUser(user.id);
 }
 

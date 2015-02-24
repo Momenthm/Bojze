@@ -1,0 +1,24 @@
+"#view_Loading":{
+	width:'100%',
+	height:'100%',
+	backgroundColor:"#000000",
+	opacity:0.5,
+}
+
+"#loadingSpin":{
+	width:'150dp',
+	height:'150dp',
+	image:"/images/loadingSpin.png",
+}
+
+"#loadingLabel":{
+	width:'100%',
+	height:'100%',
+	text:"Loading",
+	textAlign:"center",
+	color:"#FFFFFF",
+	font:{
+		fontSize: 14,
+		fontWeight: 'normal',
+	}
+}
