@@ -20,9 +20,12 @@ $.descriptionLabel.text = position.Description;
 
 $.applyView.addEventListener('click',function(e){
 	var session_id = Ti.App.Properties.getString('login_session',"");
-	// var username = Ti.App.Properties.getString('login_user',"");
-	var pid = position.id;
-	Alloy.Globals.CloudManager.createApplication(session_id,pid);
+	if(session_id != ""){
+		var pid = position.id;
+		Alloy.Globals.CloudManager.createApplication(session_id,pid);
+	}else{
+		alert("you need to login first!");
+	}
 });
 
 //===========================================================================

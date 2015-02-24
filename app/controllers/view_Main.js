@@ -15,7 +15,7 @@ var navigation = Alloy.Globals.navigation;
 var sessionId = "";
 
 //clear seesion id
-Ti.App.Properties.setString('login_session',0);
+Ti.App.Properties.setString('login_session',"");
 //get saved user
 var savedUsername = Ti.App.Properties.getString('login_user',"");
 var savedPassword = Ti.App.Properties.getString('login_pwd',"");
