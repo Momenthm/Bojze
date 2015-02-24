@@ -54,7 +54,14 @@ function init(){
 	$.main.add(view_Loading);
 	Alloy.Globals.CloudManager.queryPositions();
 }
-// function addElement(heightIndex,photoURL,pid,startTime,endTime,publishTime,vacancy,salary,description){
+
+var refresh = function(){
+	$.body.removeAllChildren();
+	init();
+};
+
+$.titleLabel.addEventListener('click',refresh);
+
 function addElement(heightIndex,photoURL,position){
 	var layer = Ti.UI.createView({
 		pid:position.id,
@@ -196,3 +203,12 @@ $.loginStatus.addEventListener('click',function(){
 
 LoginRefresh();
 Ti.App.addEventListener('refreshLogin',LoginRefresh);
+
+//bounce refresh
+$.body.addEventListener('dragend',function(){
+	if($.body.contentOffset.y <= -70){
+		refresh();
+	}
+});
+
+

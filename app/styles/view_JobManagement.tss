@@ -12,6 +12,11 @@
 	height:"10%",
 }
 
+"#body":{
+	showVerticalScrollIndicator:true,
+	disableBounce:false,
+}
+
 "#all":{
 	text:"All",
 	textAlign:"center",

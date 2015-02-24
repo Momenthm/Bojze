@@ -41,7 +41,7 @@ function init(){
 		applicationList = e.applicationList;
 		positionList = e.positionList;
 		hotelList = e.hotelList;
-		refresh(condition);
+		switchTab(condition);
 		$.main.remove(view_Loading);
 	};
 	Ti.App.addEventListener("queryApplicationsByAID",DisplayApplications);
@@ -50,7 +50,7 @@ function init(){
 }
 
 //display applications
-function refresh(filter){
+function switchTab(filter){
 	$.body.removeAllChildren();
 	var application,position,hotel;
 	heightIndex = 0;
@@ -198,7 +198,7 @@ function addElement(i,application,position,hotel){
 		var cancelApplication = function(e){
 			Ti.App.removeEventListener('cancelApplicationSuccess',cancelApplication);
 			applicationList[i].AStatus = "Cancelled"; 
-			refresh(condition);
+			switchTab(condition);
 		};
 		Ti.App.addEventListener('cancelApplicationSuccess',cancelApplication);
 		
@@ -252,7 +252,7 @@ $.all.addEventListener('click',function(){
 		
 		
 		condition = 'all';
-		refresh(condition);
+		switchTab(condition);
 	}
 });
 
@@ -285,7 +285,7 @@ $.processing.addEventListener('click',function(){
 		};
 		
 		condition = 'Processing';
-		refresh(condition);
+		switchTab(condition);
 	}
 });
 
@@ -318,7 +318,7 @@ $.approved.addEventListener('click',function(){
 		};
 		
 		condition = 'Approved';
-		refresh(condition);
+		switchTab(condition);
 	}
 });
 
@@ -351,7 +351,7 @@ $.completed.addEventListener('click',function(){
 		};
 		
 		condition = 'Completed';
-		refresh(condition);
+		switchTab(condition);
 	}
 });
 
@@ -384,10 +384,16 @@ $.cancelled.addEventListener('click',function(){
 		};
 		
 		condition = 'Cancelled';
-		refresh(condition);
+		switchTab(condition);
 	}
 });
 
+//for bounce refresh
+$.body.addEventListener('dragend',function(){
+	if($.body.contentOffset.y <= -70){
+		alert("refresh");
+	}
+});
 
 //===========================================================================
 // END OF PROPERTIES
