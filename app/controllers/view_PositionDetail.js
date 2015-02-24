@@ -25,6 +25,7 @@ $.applyView.addEventListener('click',function(e){
 		Alloy.Globals.CloudManager.createApplication(session_id,pid);
 	}else{
 		alert("you need to login first!");
+		
 	}
 });
 

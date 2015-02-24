@@ -2,6 +2,28 @@ var Cloud = require("ti.cloud");
 
 var navigation = Alloy.Globals.navigation;
 
+//function for regist at view_Register
+exports.userRegist = function(username,pwd,pwd_confirm){
+	Cloud.Users.create({
+        username : username,
+        password : pwd,
+        password_confirmation : pwd_confirm,
+    }, function(e) {
+        if (e.success) {
+        	var user = e.users[0];
+        	Ti.App.Properties.setString('login_user',username);
+			Ti.App.Properties.setString('login_pwd',pwd);
+			Ti.App.Properties.setString('login_session',e.meta.session_id);
+			Ti.App.Properties.setObject('login_userObject',user);
+			
+			Ti.App.fireEvent('registSuccess',{});
+            // alert(e.users[0].username + " is logged in." + e.meta.session_id);
+        } else {
+            alert("Error: " + e.message);
+        }
+    });
+};
+
 //function for login at view_main and view_login
 exports.userLogin = function(username,pwd,from){
 	Cloud.Users.login({

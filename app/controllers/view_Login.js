@@ -36,15 +36,17 @@ var login = Ti.UI.createLabel({
 	}
 });
 
-
-Ti.App.addEventListener('loginSuccess',function(e){
+var loginSuccess = function(e){
 	if(e.from == "view_Login"){
+		Ti.App.removeEventListener('loginSuccess',loginSuccess);
 		Ti.App.fireEvent('refreshLogin',{  	
 		});
 		alert("loginSuccess");     
 		navigation.back();
 	}
-});
+};
+
+Ti.App.addEventListener('loginSuccess',loginSuccess);
 
 login.addEventListener('click',function(){
 	// loginUser(usernameInput.value, passwordInput.value);

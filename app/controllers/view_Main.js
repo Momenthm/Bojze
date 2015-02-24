@@ -182,9 +182,27 @@ var LoginRefresh = function(){
 	if(user != ""){
 		$.loginStatus.text = "logout";
 		$.titleLabel.text = "welcome "+user;
+		$.topLeft.removeAllChildren();
 	}else{
 		$.loginStatus.text = "login";
 		$.titleLabel.text = "You have not login yet";
+		var registerLink = Ti.UI.createLabel({
+			top:"5%",
+			height:"25%",
+			text:"Regist",
+			textAlign:"center",
+			color:"#000000",
+			font:{
+				fontSize: 12,
+				fontWeight: 'normal',
+			}
+		});
+		
+		registerLink.addEventListener('click',function(){
+			navigation.open("view_Register", {title: "Regist"});
+		});
+		
+		$.topLeft.add(registerLink);
 	}
 };
 
