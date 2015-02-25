@@ -2,6 +2,8 @@
 	<View id="menuWrap">
 		<View id="menu">
 			<Button id="buttonMainView" class="menuItem" title="Main"></Button>
+			<Button id="buttonUserProfile" class="menuItem" title="Profile"></Button>
+			<Button id="buttonJobManagement" class="menuItem" title="Job Manage"></Button>
 			<Button id="buttonExit" class="menuItem" title="Exit App"></Button>
 		</View>
 		<View id="border"></View>

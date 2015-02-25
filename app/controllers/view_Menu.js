@@ -122,8 +122,10 @@ $.go = function(identifier, controller, options) {
 	
 	if (id != identifier) {
 		exports.close(function() {
-			navigation.open(controller, options);
+			navigation.open(identifier,{title:identifier});
+			// navigation.open(controller, options);
 		});
+		
 	}
 	else {
 		exports.close();
@@ -134,7 +136,16 @@ $.buttonMainView.addEventListener("click", function(e) {
 	$.go('view_Main', navigation.get('view_Main'));
 });
 
+$.buttonUserProfile.addEventListener("click", function(e) {
+	$.go('view_UserProfile', navigation.get('view_UserProfile'));
+});
+
+$.buttonJobManagement.addEventListener("click", function(e) {
+	$.go('view_JobManagement', navigation.get('view_JobManagement'));
+});
+
 $.buttonExit.addEventListener("click", function(e) {
+	alert("exit");
 	navigation.exit();
 });
 

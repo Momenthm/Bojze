@@ -26,9 +26,23 @@ var user = Ti.App.Properties.getObject('login_userObject',null);
 
 if(user != null){
 	$.NameLabel.text = user.first_name+" "+user.last_name;
-	$.emailLabel.text = user.email;
-	$.phoneLabel.text = user.custom_fields.Phone;
-	$.finLabel.text = user.custom_fields.IC;
+	if(user.email != null && user.email != ""){
+		$.emailLabel.text = user.email;
+	}else{
+		$.emailLabel.text = "You have not set your email yet";
+	}
+	
+	if(user.custom_fields != null){
+		$.phoneLabel.text = user.custom_fields.Phone;
+	}else{
+		$.phoneLabel.text = "You have not set your phoneNo yet";
+	}
+	
+	if(user.custom_fields != null){
+		$.finLabel.text = user.custom_fields.IC;
+	}else{
+		$.finLabel.text = "You have not set your ICNo yet";
+	}
 }
 
 //===========================================================================
