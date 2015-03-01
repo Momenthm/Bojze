@@ -1,0 +1,34 @@
+<Alloy>
+	<View id="view_UserProfileEdit" layout="vertical">
+		<View id="top" layout="horizontal">
+			<View id="statue" layout="vertical">
+				<ImageView id="statueImage"/>
+				<View id="buttonView" layout="horizontal">
+					<Button id="fromCamera" title="Cam"/>
+					<Button id="fromGallary" title="Gal"/>
+				</View>
+			</View>
+			<TextField id="NameContent" class="textfield"/>
+		</View>
+		<View id="body" layout="vertical">
+			<View id="emailView" class="border" layout="horizontal">
+				<Label id="emailLabel" text="email" class="label"/>
+				<TextField id="emailContent" class="textfield"/>
+			</View>
+			<View id="phoneView" class="border" layout="horizontal">
+				<Label id="phoneLabel" text="phone" class="label"/>
+				<TextField id="phoneContent" class="textfield"/>
+			</View>
+			<View id="finView" class="border" layout="horizontal">
+				<Label id="finLabel" text="fin" class="label"/>
+				<TextField id="finContent" class="textfield"/>
+			</View>
+		</View>
+		
+		<View id="bottom">
+			<View id="saveView">
+				<Button id="save" title="save"/>
+			</View>
+		</View>
+	</View>
+</Alloy>

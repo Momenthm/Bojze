@@ -1,5 +1,5 @@
 <Alloy>
-	<View id="view_UserProfile" layout="veritcal">
+	<View id="view_UserProfile" layout="vertical">
 		<View id="top" layout="horizontal">
 			<View id="statue"/>
 			<Label id="NameLabel"/>
@@ -16,6 +16,9 @@
 			</View>
 		</View>
 		<View id="bottom">
+			<View id="">
+				<Label id="edit"/>
+			</View>
 		</View>
 	</View>
 </Alloy>

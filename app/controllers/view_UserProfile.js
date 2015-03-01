@@ -45,6 +45,9 @@ if(user != null){
 	}
 }
 
+$.edit.addEventListener('click',function(){
+	navigation.open('view_UserProfileEdit',{title:"ProfileEdit"});
+});
 //===========================================================================
 // END OF PROPERTIES
 //===========================================================================	
