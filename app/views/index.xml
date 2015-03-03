@@ -1,4 +1,4 @@
 <Alloy>
-	<Window class="container">
+	<Window class="container" id="win">
 	</Window>
 </Alloy>

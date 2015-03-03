@@ -6,6 +6,8 @@ $.main.add($.view_Main);
 
 $.view_Main.height = "80%";
 
+var db = Alloy.Globals.Database;
+var readFromLocal = Ti.App.Properties.getBool('readLocalPositions',false);
 var view_Loading = Alloy.createController("view_Loading").getView('view_Loading');
 var view_Tabs = Alloy.createController("view_Tabs").getView('view_Tabs');
 view_Tabs.top = "80%";
@@ -40,19 +42,55 @@ Ti.App.addEventListener('toJobManagement',function(){
 init();
 
 function init(){
-	var DisplayPosition = function(e){
-		Ti.App.removeEventListener('queryPosition',DisplayPosition);
-		for(var i=0;i<(e.positionList).length;i++){
-			var position = e.positionList[i];
-			var photoURL = e.photoList[i];
+	if(readFromLocal == false){
+		// alert("readFromInternet");
+		var DisplayPosition = function(e){
+			Ti.App.removeEventListener('queryPosition',DisplayPosition);
+			for(var i=0;i<(e.positionList).length;i++){
+				var position = e.positionList[i];
+				var photoURL = e.photoList[i];
+				var check = db.execute('SELECT count(id) from POSITIONS WHERE id = ?',position.id);
+				var countCheck = 0;
+				if(check.isValidRow()){
+					countCheck = check.fieldByName('count(id)');
+				}
+				if(countCheck == 0){
+					// alert("add:"+i);
+					db.execute('INSERT INTO POSITIONS(id,HID,startTime,endTime,created_at,salary,vacancy,description,photoURL) VALUES (?,?,?,?,?,?,?,?,?)',position.id,position.HID,position.StartTime,position.EndTime,position.created_at,parseInt(position.Salary),parseInt(position.Vacancy),position.Description,photoURL);
+				}
+				addElement(i,photoURL,position);
+			}
+			$.main.remove(view_Loading);
+			Ti.App.Properties.setBool('readLocalPositions',true);
+		};
+		Ti.App.addEventListener('queryPosition',DisplayPosition);
+		
+		$.main.add(view_Loading);
+		Alloy.Globals.CloudManager.queryPositions();
+	}else{
+		// alert("readFromLocal!");
+		var positionList = db.execute('SELECT id,HID,startTime,endTime,created_at,salary,vacancy,description,photoURL from POSITIONS');
+		var i=0;
+		while(positionList.isValidRow()){
+			var position = {
+				id:positionList.fieldByName('id'),
+				HID:positionList.fieldByName('HID'),
+				StartTime:positionList.fieldByName('startTime'),
+				EndTime:positionList.fieldByName('endTime'),
+				created_at:positionList.fieldByName('created_at'),
+				Salary:positionList.fieldByName('salary'),
+				Vacancy:positionList.fieldByName('vacancy'),
+				Description:positionList.fieldByName('description'),
+			};
+			var photoURL = positionList.fieldByName('photoURL');
 			addElement(i,photoURL,position);
+			
+			i++;
+			positionList.next();
 		}
+		positionList.close();
 		$.main.remove(view_Loading);
-	};
-	Ti.App.addEventListener('queryPosition',DisplayPosition);
-	
-	$.main.add(view_Loading);
-	Alloy.Globals.CloudManager.queryPositions();
+	}
 }
 
 var refresh = function(){
@@ -119,7 +157,8 @@ function addElement(heightIndex,photoURL,position){
 		// top:"35%",
 		height:"33%",
 		width:"100%",
-		text:Alloy.Globals.commonFunc.formatConverter(position.StartTime)+"-"+Alloy.Globals.commonFunc.formatConverter(position.EndTime),
+		// text:Alloy.Globals.commonFunc.formatConverter(position.StartTime)+"-"+Alloy.Globals.commonFunc.formatConverter(position.EndTime),
+		text:position.StartTime + "-" + position.EndTime,
 		borderColor: "#EAEAFA",
 		borderWidth: 1,
 	});

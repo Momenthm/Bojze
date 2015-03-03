@@ -15,7 +15,7 @@
 // managers
 Alloy.Globals.CloudManager      = require("managers/CloudManager");
 Alloy.Globals.commonFunc = require("managers/commonFunc");
-
+Alloy.Globals.Database = Ti.Database.open("Bojze");
 
 //======[ configuration]======= 
 Alloy.CFG.BUILD = {

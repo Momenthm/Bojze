@@ -1,7 +1,7 @@
 var Cloud = require("ti.cloud");
 
 var navigation = Alloy.Globals.navigation;
-
+var db = Alloy.Globals.Database;
 //function for regist at view_Register
 exports.userRegist = function(username,pwd,pwd_confirm){
 	Cloud.Users.create({
@@ -293,6 +293,17 @@ exports.createApplication = function(session_id,pid){
 	            'PID' + application.PID + '\n' +
 	            'AStatus' + application.AStatus + '\n' +
 	            'created_at: ' + application.created_at);
+	       	// var check = db.execute('SELECT count(id) from APPLICATIONS WHERE id = ?',application.id);
+	       	// var countCheck = 0;
+	       	// if(check.isValidRow()){
+	       		// countCheck = check.fieldByName('count(id)');
+	       	// }
+	       	// check.close();
+// 	       	
+	       	// if(countCheck == 0){
+	       		// db.execute('INSERT INTO APPLICATIONS(id,HName,Address,PID,AStatus,created_at,user_id) VALUES (?,?,?,?,?,?,?)',application.id,hotel.HName,hotel.Address,application.PID,application.AStatus,application.updated_at,user.id);
+	       	// }
+	       	
 	    } else {
 	        alert('Error:\n' +
 	            ((e.error && e.message) || JSON.stringify(e)));

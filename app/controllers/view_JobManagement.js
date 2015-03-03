@@ -16,7 +16,7 @@
 //===========================================================================	
 
 var args = arguments[0] || {};
-
+var db = Alloy.Globals.Database;
 // Extend the demo_view controller
 exports.baseController = "view_Base";
 $.main.add($.view_JobManagement);
@@ -32,21 +32,87 @@ var applicationList = [],positionList = [],hotelList = [];
 
 var condition = "all";
 var heightIndex = 0;
+var readFromLocal = Ti.App.Properties.getBool('readLocalApplications',false);
 
 init();
 
 function init(){
-	var DisplayApplications = function(e){
-		Ti.App.removeEventListener("queryApplicationsByAID",DisplayApplications);
-		applicationList = e.applicationList;
-		positionList = e.positionList;
-		hotelList = e.hotelList;
+	
+	if(readFromLocal == false){
+		var DisplayApplications = function(e){
+			Ti.App.removeEventListener("queryApplicationsByAID",DisplayApplications);
+			applicationList = e.applicationList;	
+			positionList = e.positionList;
+			hotelList = e.hotelList;
+			for(var i=0;i<applicationList.length;i++){
+				var application = applicationList[i];
+				var position = positionList[i];
+				var hotel = hotelList[i];
+				
+				var check = db.execute("SELECT count(id) from APPLICATIONS WHERE id=?",application.id);
+				var countCheck = 0;
+				if(check.isValidRow()){
+					countCheck = check.fieldByName('count(id)');
+				}
+				check.close();
+				if(countCheck == 0){
+					db.execute('INSERT INTO APPLICATIONS(id,HName,Address,PID,AStatus,created_at,user_id) VALUES (?,?,?,?,?,?,?)',application.id,hotel.HName,hotel.Address,application.PID,application.AStatus,application.updated_at,user.id);
+				}
+			}
+			
+			switchTab(condition);
+			$.main.remove(view_Loading);
+			Ti.App.Properties.setBool('readLocalApplications',true);
+		};
+		Ti.App.addEventListener("queryApplicationsByAID",DisplayApplications);
+		$.main.add(view_Loading);
+		Alloy.Globals.CloudManager.queryApplicationsByUser(user.id);
+	}else{
+		// alert('readApplicationFromLocal');
+		var applicationValues = db.execute('SELECT * from APPLICATIONS where user_id = ?',user.id);
+		while(applicationValues.isValidRow()){
+			var application = {
+				id:applicationValues.fieldByName('id'),
+				PID:applicationValues.fieldByName('PID'),
+				AStatus:applicationValues.fieldByName('AStatus'),
+				updated_at:applicationValues.fieldByName('created_at'),
+			};
+			
+			var position;
+			
+			var positionValues = db.execute('SELECT * from POSITIONS where id=?',applicationValues.fieldByName('PID'));
+			if(positionValues.isValidRow()){
+				position = {
+					id:positionValues.fieldByName('id'),
+					HID:positionValues.fieldByName('HID'),
+					StartTime:positionValues.fieldByName('startTime'),
+					EndTime:positionValues.fieldByName('endTime'),
+					created_at:positionValues.fieldByName('created_at'),
+					Salary:positionValues.fieldByName('salary'),
+					Vacancy:positionValues.fieldByName('vacancy'),
+					Description:positionValues.fieldByName('description'),
+				};
+			}
+			positionValues.close();
+			
+			var hotel = {
+				HName:applicationValues.fieldByName('HName'),
+				Address:applicationValues.fieldByName('Address'),
+			};
+			
+			applicationList.push(application);
+			positionList.push(position);
+			hotelList.push(hotel);
+			
+			// alert(application);
+			// alert(position);
+			// alert(hotel);
+			applicationValues.next();
+		}
+		applicationValues.close();
+		
 		switchTab(condition);
-		$.main.remove(view_Loading);
-	};
-	Ti.App.addEventListener("queryApplicationsByAID",DisplayApplications);
-	$.main.add(view_Loading);
-	Alloy.Globals.CloudManager.queryApplicationsByUser(user.id);
+	}
 }
 
 //display applications
